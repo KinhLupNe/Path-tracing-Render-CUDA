@@ -1,0 +1,146 @@
+[
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\src\\main.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src\\main.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src\\main.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\src\\gl_loader.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src\\gl_loader.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src\\gl_loader.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\src\\gl_loader.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -D_WINDOWS -Xcompiler=\" /GR /EHsc\" -use_fast_math -Xcompiler=\"-O2 -Ob2\" -DNDEBUG -std=c++17 \"--generate-code=arch=compute_52,code=[compute_52,sm_52]\" -Xcompiler=-MD -x cu -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src\\render_kernel.cu -o CMakeFiles\\ScratchPathTracerCUDA.dir\\src\\render_kernel.cu.obj -Xcompiler=-FdCMakeFiles\\ScratchPathTracerCUDA.dir\\,-FS",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src\\render_kernel.cu",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\src\\render_kernel.cu.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui_draw.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui_draw.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui_draw.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui_draw.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui_tables.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui_tables.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui_tables.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui_tables.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui_widgets.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui_widgets.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\imgui_widgets.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\imgui_widgets.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\backends\\imgui_impl_glfw.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends\\imgui_impl_glfw.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends\\imgui_impl_glfw.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\backends\\imgui_impl_glfw.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\src -I\"C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\include\" -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD /FoCMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\backends\\imgui_impl_opengl2.cpp.obj /FdCMakeFiles\\ScratchPathTracerCUDA.dir\\ /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends\\imgui_impl_opengl2.cpp",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\imgui-src\\backends\\imgui_impl_opengl2.cpp",
+  "output": "CMakeFiles\\ScratchPathTracerCUDA.dir\\_deps\\imgui-src\\backends\\imgui_impl_opengl2.cpp.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\context.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\context.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\context.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\context.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\init.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\init.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\init.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\init.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\input.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\input.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\input.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\input.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\monitor.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\monitor.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\vulkan.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\vulkan.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\window.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\window.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\window.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\window.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_init.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_init.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_joystick.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_joystick.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_monitor.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_monitor.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_time.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_time.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_thread.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_thread.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_window.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\win32_window.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\wgl_context.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\wgl_context.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\egl_context.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\egl_context.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj"
+},
+{
+  "directory": "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_USE_CONFIG_H -D_UNICODE -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\include -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src -IE:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-build\\src /DWIN32 /D_WINDOWS /O2 /Ob2 /DNDEBUG -MD /W3 /Fo_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj /Fd_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\glfw.pdb /FS -c E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\osmesa_context.c",
+  "file": "E:\\nam4\\ky2\\Project2\\project\\ScratchPathTracerCUDA\\build\\_deps\\glfw-src\\src\\osmesa_context.c",
+  "output": "_deps\\glfw-build\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj"
+}
+]
