@@ -4,6 +4,7 @@
 #include <cuda_gl_interop.h>
 #include "gl_loader.h"
 #include "render_kernel.h"
+#include "math/vec3.h"
 
 // Thư viện ImGui dùng để tạo giao diện điều khiển
 #include "imgui.h"
@@ -74,8 +75,8 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL2_Init();
 
-    float time = 0.0f;
-    float anim_speed = 10.0f; 
+    Point3 sphere_pos(0.0f, 0.0f, -1.0f);
+    float sphere_radius = 0.5f; 
 
     std::cout << "[INFO] Bat dau Real-time Render Loop!" << std::endl;
 
@@ -93,7 +94,8 @@ int main() {
         ImGui::Begin("Bang Dieu Khien GPU");
         ImGui::Text("Chao mung den voi CUDA Path Tracer!");
         ImGui::Separator();
-        ImGui::SliderFloat("Toc do gon song", &anim_speed, 1.0f, 50.0f);
+        ImGui::SliderFloat3("Vi tri (X, Y, Z)", sphere_pos.e, -5.0f, 5.0f);
+        ImGui::SliderFloat("Ban kinh", &sphere_radius, 0.1f, 3.0f);
         ImGui::Text("Hieu nang: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         if (ImGui::Button("Thoat Chuong Trinh")) {
             glfwSetWindowShouldClose(window, true);
@@ -112,7 +114,7 @@ int main() {
         cudaGraphicsResourceGetMappedPointer((void**)&d_out, &num_bytes, interop.cuda_pbo_resource);
 
         // Gọi hàng vạn luồng GPU nhảy vào tính toán màu sắc và ghi vào con trỏ d_out
-        launch_render_kernel(width, height, d_out, time, anim_speed); 
+        launch_render_kernel(width, height, d_out, sphere_pos, sphere_radius); 
 
         // CUDA xong việc, nhả khóa (Unmap) trả PBO lại cho OpenGL
         cudaGraphicsUnmapResources(1, &interop.cuda_pbo_resource, 0);
@@ -147,7 +149,6 @@ int main() {
 
         // Đẩy khung hình ra màn hình (Double Buffering)
         glfwSwapBuffers(window);
-        time += 0.01f;
     }
 
     // Dọn dẹp RAM/VRAM khi tắt ứng dụng

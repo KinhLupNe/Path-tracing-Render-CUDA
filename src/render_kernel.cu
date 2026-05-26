@@ -1,64 +1,66 @@
+#include "math/hittable/sphere.h"
+#include "math/ray.h"
+#include "math/vec3.h"
 #include "render_kernel.h"
+// tinh mau cho 1 pixel
+__device__ Color ray_color(const Ray &r, Point3 sphere_center, float sphere_radius) {
+  Sphere s(sphere_center, sphere_radius);
+  hit_record rec;
 
-// Đây là "Hạt nhân" (Kernel) chạy trên hàng vạn nhân CUDA
-// Từ khóa __global__ nghĩa là: CPU gọi lệnh này, nhưng GPU mới là thằng thực thi
-__global__ void render_anim_kernel(int width, int height, uchar4* d_output, float time, float speed) {
-    // ==============================================================
-    // 1. TÍNH TỌA ĐỘ PIXEL TRÊN MÀN HÌNH
-    // ==============================================================
-    // GPU chia công việc thành các Block (Khối), mỗi Block có nhiều Thread (Luồng).
-    // Công thức này giúp luồng hiện tại biết nó đang phụ trách tọa độ x, y nào trên bức ảnh
-    int i = threadIdx.x + blockIdx.x * blockDim.x; // Cột (x)
-    int j = threadIdx.y + blockIdx.y * blockDim.y; // Hàng (y)
+  if (s.hit(r, 0.0f, 100.0f, rec)) {
+    // Trung -> Tra ve mau theo phap tuyen (Normal)
+    return 0.5f * Color(rec.normal.x() + 1.0f, rec.normal.y() + 1.0f,
+                        rec.normal.z() + 1.0f);
+  }
 
-    // Nếu luồng này tính lố ra ngoài viền màn hình thì bắt nó dừng lại để bảo vệ VRAM
-    if (i >= width || j >= height) return;
-
-    // Chuẩn hóa tọa độ x, y (đang từ 0->800) thành khoảng 0.0 -> 1.0 (như tỷ lệ phần trăm)
-    float u = float(i) / float(width);
-    float v = float(j) / float(height);
-
-    // ==============================================================
-    // 2. THUẬT TOÁN TÍNH MÀU SẮC
-    // (Chỗ này sau này sẽ thay bằng Thuật toán Path Tracing lõi)
-    // ==============================================================
-    // Hiện tại chỉ là hàm sóng Cos/Sin tạo ra màu RGB gợn sóng thay đổi theo thời gian
-    float r = 0.5f + 0.5f * cosf(time + u * speed);
-    float g = 0.5f + 0.5f * sinf(time + v * speed);
-    float b = 0.5f + 0.5f * cosf(time + (u+v) * (speed * 0.5f));
-
-    // ==============================================================
-    // 3. TÌM VỊ TRÍ TRONG BỘ NHỚ TUYẾN TÍNH
-    // ==============================================================
-    // Mảng d_output là mảng 1 chiều, nhưng màn hình là mảng 2 chiều.
-    // Công thức (Hàng * ChiềuRộng + Cột) giúp chuyển tọa độ 2D thành Index 1D
-    int pixel_index = j * width + i; 
-
-    // ==============================================================
-    // 4. GHI MÀU VÀO VRAM (Vào chính cái PBO của OpenGL)
-    // ==============================================================
-    // d_output là kiểu uchar4 (mỗi kênh màu từ 0-255) nên phải nhân màu thực (0.0->1.0) với 255.99
-    d_output[pixel_index].x = (unsigned char)(255.99f * r); // Đỏ (Red)
-    d_output[pixel_index].y = (unsigned char)(255.99f * g); // Xanh lá (Green)
-    d_output[pixel_index].z = (unsigned char)(255.99f * b); // Xanh dương (Blue)
-    d_output[pixel_index].w = 255;                          // Độ đặc (Alpha/Opacity)
+  // Truot -> Ve mau bau troi
+  Vec3 unit_direction = unit_vector(r.direction());
+  float t = 0.5 * (unit_direction.y() + 1.0f);
+  return (1.0f - t) * Color(1.0f, 1.0f, 1.0f) + t * Color(0.5f, 0.2f, 1.0f);
 }
 
-// Đây là hàm vỏ bọc (Wrapper) chạy trên CPU để ra lệnh cho GPU
-void launch_render_kernel(int width, int height, uchar4* d_output, float time, float speed) {
-    // Định nghĩa 1 Block (Khối) sẽ chứa 8x8 = 64 luồng (threads)
-    int tx = 8;
-    int ty = 8;
-    
-    // Tính toán xem cần bao nhiêu Block để phủ kín toàn bộ màn hình (width x height)
-    dim3 blocks(width / tx + 1, height / ty + 1);
-    dim3 threads(tx, ty);
+// Kernel chinh chay tren GPU
+__global__ void render_anim_kernel(int width, int height, uchar4 *d_output, Point3 sphere_center, float sphere_radius) {
+  int i = threadIdx.x + blockIdx.x * blockDim.x;
+  int j = threadIdx.y + blockIdx.y * blockDim.y;
 
-    // Kích hoạt "Công tắc phân thân" <<<blocks, threads>>>
-    // Ra lệnh cho GPU xuất ra hàng trăm ngàn luồng chạy hàm render_anim_kernel cùng một lúc
-    render_anim_kernel<<<blocks, threads>>>(width, height, d_output, time, speed);
-    
-    // Yêu cầu CPU phải đứng chờ GPU tính toán xong toàn bộ màn hình mới được chạy code tiếp.
-    // Nếu thiếu dòng này, CPU có thể ra lệnh cho OpenGL vẽ trong khi CUDA còn chưa tô màu xong!
-    cudaDeviceSynchronize(); 
+  if (i >= width || j >= height)
+    return;
+
+  // Setup Camera
+  float aspect_ratio = float(width) / float(height);
+  float viewport_height = 2.0f;
+  float viewport_width = aspect_ratio * viewport_height;
+  float focal_length = 1.0f;
+  Point3 origin = Point3(0, 0, 0);
+  Vec3 horizontal = Vec3(viewport_width, 0, 0);
+  Vec3 vertical = Vec3(0, viewport_height, 0);
+  Point3 lower_left_corner =
+      origin - horizontal / 2.0f - vertical / 2.0f - Vec3(0, 0, focal_length);
+
+  // Mapping Pixel -> Viewport
+  float u = float(i) / float(width - 1);
+  float v = float(height - 1 - j) / float(height - 1);
+
+  // Ban tia sang
+  Ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
+  Color pixel_color = ray_color(r, sphere_center, sphere_radius);
+
+  // Ghi mau vao VRAM
+  int pixel_index = j * width + i;
+  d_output[pixel_index].x = (unsigned char)(255.99f * pixel_color.x());
+  d_output[pixel_index].y = (unsigned char)(255.99f * pixel_color.y());
+  d_output[pixel_index].z = (unsigned char)(255.99f * pixel_color.z());
+  d_output[pixel_index].w = 255;
+}
+
+// Ham goi tu CPU
+void launch_render_kernel(int width, int height, uchar4 *d_output, Point3 sphere_center, float sphere_radius) {
+  int tx = 8;
+  int ty = 8;
+  dim3 blocks(width / tx + 1, height / ty + 1);
+  dim3 threads(tx, ty);
+
+  render_anim_kernel<<<blocks, threads>>>(width, height, d_output, sphere_center, sphere_radius);
+  cudaDeviceSynchronize();
 }

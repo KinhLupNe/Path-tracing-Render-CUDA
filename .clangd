@@ -8,3 +8,4 @@ CompileFlags:
     - "-Xcompiler*"
     - "--generate-code*"
     - "-forward-unknown-to-host-compiler"
+    - "-rdc=true"
