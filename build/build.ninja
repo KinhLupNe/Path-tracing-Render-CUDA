@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_ScratchPathTracerCUDA: phony || cmake_ob
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src\main.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -59,7 +59,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj: CXX_COMPILER__Scrat
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src\gl_loader.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -68,7 +68,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj: CXX_COMPILER__
 build CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj: CUDA_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src\render_kernel.cu || cmake_object_order_depends_target_ScratchPathTracerCUDA
   DEP_FILE = CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj.d
   FLAGS = -D_WINDOWS -Xcompiler=" /GR /EHsc" -use_fast_math -Xcompiler="-O2 -Ob2" -DNDEBUG -std=c++17 "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -76,7 +76,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj: CUDA_COMPIL
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\imgui.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -84,7 +84,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj: CXX_CO
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\imgui_draw.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -92,7 +92,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj: C
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\imgui_tables.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -100,7 +100,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj:
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\imgui_widgets.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -108,7 +108,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_glfw.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends\imgui_impl_glfw.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -116,12 +116,29 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_g
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_opengl2.cpp.obj: CXX_COMPILER__ScratchPathTracerCUDA_unscanned_Release E$:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends\imgui_impl_opengl2.cpp || cmake_object_order_depends_target_ScratchPathTracerCUDA
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD
-  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
+  INCLUDES = -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\imgui-src\backends -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\src -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\include" -IE:\nam4\ky2\Project2\project\ScratchPathTracerCUDA\build\_deps\glfw-src\include
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   OBJECT_FILE_DIR = CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
   TARGET_PDB = ScratchPathTracerCUDA.pdb
 
+
+# =============================================================================
+# Device Link build statements for EXECUTABLE target ScratchPathTracerCUDA
+
+
+#############################################
+# Link the executable CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj
+
+build CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj: CXX_EXECUTABLE_DEVICE_LINKER__ScratchPathTracerCUDA_Release CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_glfw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_opengl2.cpp.obj | _deps\glfw-build\src\glfw3.lib || _deps\glfw-build\src\glfw3.lib
+  LANGUAGE_COMPILE_FLAGS = -D_WINDOWS -Xcompiler=" /GR /EHsc" -use_fast_math -Xcompiler="-O2 -Ob2" -DNDEBUG "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MD
+  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib opengl32.lib curand.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_PATH = -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v12.6\lib\x64
+  OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
+  TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
+  TARGET_FILE = CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj
+  TARGET_IMPLIB = ScratchPathTracerCUDA.lib
+  TARGET_PDB = ScratchPathTracerCUDA.pdb
 
 # =============================================================================
 # Link build statements for EXECUTABLE target ScratchPathTracerCUDA
@@ -130,10 +147,10 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_o
 #############################################
 # Link the executable ScratchPathTracerCUDA.exe
 
-build ScratchPathTracerCUDA.exe: CXX_EXECUTABLE_LINKER__ScratchPathTracerCUDA_Release CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_glfw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_opengl2.cpp.obj | _deps\glfw-build\src\glfw3.lib || _deps\glfw-build\src\glfw3.lib
+build ScratchPathTracerCUDA.exe: CXX_EXECUTABLE_LINKER__ScratchPathTracerCUDA_Release CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_glfw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_opengl2.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj | _deps\glfw-build\src\glfw3.lib || _deps\glfw-build\src\glfw3.lib
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -MD
   LINK_FLAGS = /machine:x64 /INCREMENTAL:NO /subsystem:console
-  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib  opengl32.lib  cudadevrt.lib  cudart_static.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib  opengl32.lib  curand.lib  cudadevrt.lib  cudart_static.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   LINK_PATH = -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v12.6\lib\x64
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   POST_BUILD = cd .

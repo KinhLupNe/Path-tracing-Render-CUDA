@@ -27,7 +27,7 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 
 include(ExternalProject)
 ExternalProject_Add(imgui-populate
-                     "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/ocornut/imgui.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v1.90.4"
+                     "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/ocornut/imgui.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v1.89.9"
                     SOURCE_DIR          "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build/_deps/imgui-src"
                     BINARY_DIR          "E:/nam4/ky2/Project2/project/ScratchPathTracerCUDA/build/_deps/imgui-build"
                     CONFIGURE_COMMAND   ""

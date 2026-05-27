@@ -132,7 +132,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_o
 
 build CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj: CXX_EXECUTABLE_DEVICE_LINKER__ScratchPathTracerCUDA_Debug CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_glfw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_opengl2.cpp.obj | _deps\glfw-build\src\glfw3.lib || _deps\glfw-build\src\glfw3.lib
   LANGUAGE_COMPILE_FLAGS = -D_WINDOWS -Xcompiler=" /GR /EHsc" -use_fast_math -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MDd
-  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib opengl32.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib opengl32.lib curand.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   LINK_PATH = -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v12.6\lib\x64
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   TARGET_COMPILE_PDB = CMakeFiles\ScratchPathTracerCUDA.dir\
@@ -150,7 +150,7 @@ build CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj: CXX_EXECUTABLE
 build ScratchPathTracerCUDA.exe: CXX_EXECUTABLE_LINKER__ScratchPathTracerCUDA_Debug CMakeFiles\ScratchPathTracerCUDA.dir\src\main.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\gl_loader.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\src\render_kernel.cu.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_draw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_tables.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\imgui_widgets.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_glfw.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\_deps\imgui-src\backends\imgui_impl_opengl2.cpp.obj CMakeFiles\ScratchPathTracerCUDA.dir\cmake_device_link.obj | _deps\glfw-build\src\glfw3.lib || _deps\glfw-build\src\glfw3.lib
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
-  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib  opengl32.lib  cudadevrt.lib  cudart_static.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_LIBRARIES = _deps\glfw-build\src\glfw3.lib  opengl32.lib  curand.lib  cudadevrt.lib  cudart_static.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   LINK_PATH = -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v12.6\lib\x64
   OBJECT_DIR = CMakeFiles\ScratchPathTracerCUDA.dir
   POST_BUILD = cd .

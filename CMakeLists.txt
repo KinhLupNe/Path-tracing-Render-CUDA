@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18)
 # Định nghĩa dự án tên là ScratchPathTracerCUDA, hỗ trợ 3 ngôn ngữ: C++, C và đặc biệt là CUDA
 project(ScratchPathTracerCUDA LANGUAGES CXX C CUDA)
 
-# Yêu cầu CMake sinh ra file compile_commands.json. 
+# Yêu cầu CMake sinh ra file compile_commands.json.
 # File này là "từ điển" để các trình biên tập như Neovim (thông qua clangd) đọc hiểu code C++ và CUDA
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -34,7 +34,7 @@ FetchContent_Declare(
 )
 FetchContent_GetProperties(imgui)
 if(NOT imgui_POPULATED)
-    FetchContent_Populate(imgui)
+  FetchContent_Populate(imgui)
 endif()
 
 # Gom toàn bộ mã nguồn của ImGui vào một biến để lát nữa đem đi biên dịch chung với code của chúng ta
@@ -67,4 +67,4 @@ set_target_properties(ScratchPathTracerCUDA PROPERTIES CUDA_SEPARABLE_COMPILATIO
 target_include_directories(ScratchPathTracerCUDA PRIVATE src ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 
 # Cuối cùng, nói cho CMake biết phải liên kết (link) chương trình của chúng ta với thư viện GLFW và OpenGL của Windows
-target_link_libraries(ScratchPathTracerCUDA PRIVATE glfw opengl32)
+target_link_libraries(ScratchPathTracerCUDA PRIVATE glfw opengl32 curand)
