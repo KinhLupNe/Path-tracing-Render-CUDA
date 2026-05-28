@@ -1,26 +1,28 @@
 #pragma once
 #include "../ray.h"
 #include "../vec3.h"
+#include "hittable.h"
 #include <cmath>
 #include <cuda_runtime.h>
-
-struct hit_record {
-  float t;
-  Point3 p;
-  Vec3 normal;
-};
-
-class Sphere {
+#include "math/material.h"
+class Sphere : public Hittable
+{
 public:
   Point3 center;
   float radius;
+  Material mat;
   __device__ __host__ inline Sphere() {}
-  __device__ __host__ inline Sphere(const Point3 &center, float radius)
-      : center(center), radius(radius) {}
+  __device__ __host__ inline Sphere(const Point3 &center, float radius, Material m)
+      : center(center), radius(radius), mat(m)
+  {
+  }
+
+  // override
 
   // kiem tra tia sang co dam trung qua cau khong
-  __device__ __host__ inline bool hit(const Ray &r, float t_min, float t_max,
-                                      hit_record &rec) const {
+  __device__ virtual bool hit(const Ray &r, float t_min, float t_max,
+                              hit_record &rec) const override
+  {
     // he so cua at^2 + bt +c = 0
     Vec3 oc = r.origin() - center;
     float a = dot(r.direction(), r.direction());
@@ -36,15 +38,18 @@ public:
 
     float root = (-b - sqrtd) / (2.0f * a);
     // uu tien lay diem giao gan nhat
-    if (root < t_min || root > t_max) {
+    if (root < t_min || root > t_max)
+    {
       root = (-b + sqrtd) / (2.0f * a);
-      if (root < t_min || root > t_max) {
+      if (root < t_min || root > t_max)
+      {
         return false;
       }
     }
     rec.t = root;
     rec.p = r.at(root);
     rec.normal = (rec.p - center) / radius;
+    rec.mat = this->mat;
     return true;
   }
 };
