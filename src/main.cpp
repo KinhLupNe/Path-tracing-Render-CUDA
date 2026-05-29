@@ -100,8 +100,8 @@ int main()
 
   Hittable **d_world;
   Hittable **d_list;
-  cudaMalloc((void **)&d_world, 4 * sizeof(Hittable *));
-  cudaMalloc((void **)&d_list, 4 * sizeof(Hittable *));
+  cudaMalloc((void **)&d_world, 5 * sizeof(Hittable *));
+  cudaMalloc((void **)&d_list, 5 * sizeof(Hittable *));
 
   create_world_wrapper(d_list, d_world);
 

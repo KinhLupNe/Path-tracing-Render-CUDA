@@ -2,6 +2,7 @@
 #include "device_types.h"
 
 #include <cmath>
+#include <cstdio>
 #include <cuda_runtime.h>
 
 #include <iostream>
@@ -137,6 +138,16 @@ __device__ inline Vec3 random_in_unit_vector(curandState *state)
 __device__ inline Vec3 random_unit_vector(curandState *state)
 {
   return unit_vector(random_in_unit_vector(state));
+}
+
+// refract :
+
+__device__ inline Vec3 refract(const Vec3 &r_in_dir, const float &a, Vec3 normal)
+{
+  Vec3 d_perp = a * (r_in_dir + dot(-r_in_dir, normal) * normal);
+
+  Vec3 d_para = -sqrtf(1 - d_perp.length_squared()) * normal;
+  return d_perp + d_para;
 }
 
 // Định danh phụ cho code dễ hiểu

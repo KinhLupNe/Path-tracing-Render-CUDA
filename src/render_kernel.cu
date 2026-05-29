@@ -11,6 +11,13 @@
 #include <curand_uniform.h>
 #include "math/hittable/hittable_list.h"
 
+// schlick appro -> reflect coef -> he so nay dai dien cho ti le tia phan xa/ tia toi
+__device__ inline float reflectionSchlickA(float cosine, float ir)
+{
+  float r = (1 - ir) / (1 + ir);
+  r = r * r;
+  return r + (1 - r) * powf(1 - cosine, 5);
+}
 // input la tia vao, ouput : tan xa hay khong ? co tra ve scattered attenuation
 __device__ bool scatter(const Ray &r_in, const hit_record &rec, Vec3 &attenuation, Ray &scattered,
                         curandState *local_rand_state)
@@ -22,7 +29,7 @@ __device__ bool scatter(const Ray &r_in, const hit_record &rec, Vec3 &attenuatio
     Vec3 scatter_direction = rec.normal + random_unit_vector(local_rand_state);
     scattered = Ray(rec.p, scatter_direction);
     attenuation = rec.mat.albedo;
-    return true;
+    return (dot(scattered.direction(), rec.normal) > 0.0f);
   }
   case MaterialType::METAL:
   {
@@ -36,7 +43,23 @@ __device__ bool scatter(const Ray &r_in, const hit_record &rec, Vec3 &attenuatio
   }
   case MaterialType::DIELECTRIC:
   {
-    // TODO
+    attenuation = rec.mat.albedo;
+    // di từ môi trường vào quả cầu , hay cầu đi ra ngoài môi trường
+    float a = dot(rec.normal, r_in.direction()) < 0 ? (1.0f / rec.mat.ir) : rec.mat.ir;
+    Vec3 out_normal = a == rec.mat.ir ? -rec.normal : rec.normal;
+    float costheta = fabs(dot(rec.normal, unit_vector(r_in.direction())));
+    bool isRefract = a * sqrtf(1.0f - costheta * costheta) > 1.0f ? false : true;
+    Vec3 scatter_direction;
+    if (!isRefract ||
+        reflectionSchlickA(costheta, rec.mat.ir) > random_float(0.0f, 1.0f, local_rand_state))
+    {
+      scatter_direction = reflect(r_in.direction(), out_normal);
+    }
+    else
+    {
+      scatter_direction = refract(unit_vector(r_in.direction()), a, out_normal);
+    }
+    scattered = Ray(rec.p, unit_vector(scatter_direction));
     return true;
   }
   default:
@@ -100,27 +123,20 @@ __global__ void create_world_kernel(Hittable **d_list, Hittable **d_world)
   {
     // con tro toi ham hit cua cac vat lieu
     d_list[0] = new Sphere(Point3(1.0, 0.0, -1.0), 0.5f,
-                           Material(MaterialType::METAL, Vec3(0.8f, 0.6f, 0.2f), 0, 0));
+                           Material(MaterialType::DIELECTRIC, Vec3(1.0f, 1.0f, 1.0f), 0, 1.5));
     d_list[1] = new Sphere(Point3(0, -100.5f, -1), 100.0f,
                            Material(MaterialType::LAMBERTIAN, Vec3(0.8f, 0.8f, 0.0f), 0, 0));
     d_list[2] = new Sphere(Point3(-1.0, -0.0, -1.0), 0.5f,
-                           Material(MaterialType::METAL, Vec3(0.8f, 0.8f, 0.8f), 0, 0));
+                           Material(MaterialType::METAL, Vec3(0.8f, 0.8f, 0.8f), 0.4f, 0));
     d_list[3] = new Sphere(Point3(0.0, 0.0, -1.2), 0.5f,
-                           Material(MaterialType::LAMBERTIAN, Vec3(0.1f, 0.2f, 0.5f), 0, 0));
+                           Material(MaterialType::LAMBERTIAN, Vec3(0.2f, 0.5f, 0.8f), 0, 0));
+    d_list[4] = new Sphere(Point3(1.0, 0.0, -1.0), -0.4f,
+                           Material(MaterialType::DIELECTRIC, Vec3(1.0f, 1.0f, 1.0f), 0, 1.5f));
   }
 
   // mang dong
-  *d_world = new HittableList(d_list, 4);
+  *d_world = new HittableList(d_list, 5);
 }
-
-// __global__ void update_world_kernel(Hittable **d_list, Point3 base_center, float time)
-// {
-//   if (threadIdx.x == 0 && blockIdx.x == 0)
-//   {
-//     Sphere *s = (Sphere *)d_list[0];
-//     s->center = base_center + Vec3(0, sinf(time) / 2.0f, 0);
-//   }
-// }
 
 void create_world_wrapper(Hittable **d_list, Hittable **d_world)
 {
@@ -128,13 +144,6 @@ void create_world_wrapper(Hittable **d_list, Hittable **d_world)
   cudaDeviceSynchronize();
 }
 
-// void update_world_wrapper(Hittable **d_list, Point3 base_center, float time)
-// {
-//   update_world_kernel<<<1, 1>>>(d_list, base_center, time);
-//   cudaDeviceSynchronize();
-// }
-// 2. Hàm Wrapper (chạy trên CPU) giúp main.cpp cấp phát VRAM và gọi Kernel ở
-// trên
 void allocate_and_init_curand(curandState **d_rand_state, int width, int height)
 {
   // Lúc này trình biên dịch nvcc đã biết curandState to chừng nào nên sizeof()
@@ -236,7 +245,9 @@ __global__ void free_world_kernel(Hittable **d_list, Hittable **d_world)
   {
     delete d_list[0]; // Xóa quả cầu chính
     delete d_list[1]; // Xóa quả cầu mặt đất khổng lồ
-    delete *d_world;  // Xóa chiếc Rổ (HittableList)
+    delete d_list[2];
+    delete d_list[3];
+    delete *d_world; // Xóa chiếc Rổ (HittableList)
   }
 }
 
