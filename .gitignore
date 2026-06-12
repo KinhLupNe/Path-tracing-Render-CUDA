@@ -1,0 +1,20 @@
+# Build output
+build/
+out/
+
+# Scene data (large archives, exceeds GitHub file size limits)
+src/scenes/
+
+# IDE / tool local files
+.vscode/
+.vs/
+.cache/
+.claude/settings.local.json
+compile_commands.json
+imgui.ini
+
+# Misc
+*.ilk
+*.pdb
+*.obj
+*.exe

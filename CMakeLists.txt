@@ -37,6 +37,14 @@ if(NOT imgui_POPULATED)
   FetchContent_Populate(imgui)
 endif()
 
+# 3. TẢI VÀ TÍCH HỢP TINYXML2 (Dùng để đọc file xml của Mitsuba 3)
+FetchContent_Declare(
+    tinyxml2
+    GIT_REPOSITORY https://github.com/leethomason/tinyxml2.git
+    GIT_TAG 9.0.0
+)
+FetchContent_MakeAvailable(tinyxml2)
+
 # Gom toàn bộ mã nguồn của ImGui vào một biến để lát nữa đem đi biên dịch chung với code của chúng ta
 set(IMGUI_SOURCES
     ${imgui_SOURCE_DIR}/imgui.cpp
@@ -59,6 +67,8 @@ add_executable(ScratchPathTracerCUDA
     src/main.cpp
     src/gl_loader.cpp
     src/render_kernel.cu
+    src/core/ui_manager.cpp
+    src/core/camera_controller.cpp
     ${IMGUI_SOURCES}
 )
 
@@ -66,5 +76,5 @@ add_executable(ScratchPathTracerCUDA
 set_target_properties(ScratchPathTracerCUDA PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 target_include_directories(ScratchPathTracerCUDA PRIVATE src ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 
-# Cuối cùng, nói cho CMake biết phải liên kết (link) chương trình của chúng ta với thư viện GLFW và OpenGL của Windows
-target_link_libraries(ScratchPathTracerCUDA PRIVATE glfw opengl32 curand)
+# Cuối cùng, nói cho CMake biết phải liên kết (link) chương trình của chúng ta với thư viện GLFW, OpenGL và TinyXML2
+target_link_libraries(ScratchPathTracerCUDA PRIVATE glfw opengl32 curand tinyxml2)
