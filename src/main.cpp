@@ -14,6 +14,7 @@
 #include "loaders/hardcoded_loader.h"
 #include "loaders/mitsuba_loader.h"
 #include "loaders/test_hardcore_loader.h"
+#include "loaders/main_scene_loader.h"
 
 // Cấu trúc lưu trữ các thành phần cầu nối giữa CUDA và OpenGL
 struct CudaGLInterop {
@@ -100,7 +101,7 @@ int main() {
 
   float aspect_ratio = float(width) / float(height);
 
-  SceneLoader *loader = new HardcodedLoader();
+  SceneLoader *loader = new MainSceneLoader();
   Scene scene = loader->load(aspect_ratio);
   delete loader;
 
@@ -109,7 +110,7 @@ int main() {
     std::cout << "[INFO] Scene trong rỗng (hoặc không chứa khối cầu). Chuyển về chế độ Hardcoded "
                  "ngẫu nhiên!"
               << std::endl;
-    loader = new HardcodedLoader();
+    loader = new MainSceneLoader;
     scene = loader->load(aspect_ratio);
     delete loader;
   }

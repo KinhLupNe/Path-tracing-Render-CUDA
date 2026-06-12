@@ -9,7 +9,7 @@
 // So luong toi da object trong scene (suc chua cua d_list).
 // Scene phuc tap sinh ngau nhien nen chi can dam bao d_list du lon;
 // so luong thuc te se duoc luu trong bien global d_world_size.
-#define MAX_HITTABLES 512
+#define MAX_HITTABLES 10000
 
 struct curandStateXORWOW;
 typedef struct curandStateXORWOW curandState;
