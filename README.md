@@ -76,12 +76,12 @@ Below is the roadmap and development progress of the project:
 
 ## 📸 Gallery
 
-*(TODO: Place your rendered images in the `docs/images/` folder and replace the links below)*
+
 
 | Feature | Image |
 |---------|-------|
-| **Motion Blur** | ![Motion Blur](docs/images/motion_blur.jpg) <br> *TODO: Insert an image showing moving spheres with motion blur.* |
-| **Depth of Field** | ![Depth of Field](docs/images/dof.jpg) <br> *TODO: Insert an image showcasing camera focus and bokeh.* |
+| **Motion Blur** | ![Motion Blur](docs/images/motion_blur.jpg)  |
+| **Depth of Field** | ![Depth of Field](docs/images/dof.jpg)  |
 | **BVH & High Poly** | ![BVH Performance](docs/images/bvh.jpg) <br> *TODO: Insert an image rendering a complex scene like the Stanford Bunny or Cornell Box.* |
 | **Textures & Volumes** | ![Textures & Fog](docs/images/textures_volumes.jpg) <br> *TODO: Insert an image demonstrating image textures, Perlin noise, or volumetric fog.* |
 
