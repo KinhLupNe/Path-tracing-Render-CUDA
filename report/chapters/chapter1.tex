@@ -1,0 +1,36 @@
+% !TEX root = ../main.tex
+%==============================================================
+\chapter{Giới thiệu đề tài}
+\label{ch:gioi-thieu}
+
+\section{Đặt vấn đề}
+Kết xuất đồ họa (rendering) là quá trình tạo ra hình ảnh hai chiều từ mô tả
+của một cảnh ba chiều. Trong số các kỹ thuật kết xuất, \textit{Path Tracing}
+là phương pháp dựa trên mô phỏng vật lý của ánh sáng, cho phép tạo ra hình ảnh
+có độ chân thực cao với các hiệu ứng như phản xạ, khúc xạ, đổ bóng mềm và
+chiếu sáng toàn cục (global illumination). Tuy nhiên, chi phí tính toán của
+Path Tracing rất lớn do phải mô phỏng hàng triệu tia sáng cho mỗi khung hình.
+
+% TODO: Bổ sung dẫn nhập về nhu cầu kết xuất thời gian thực.
+
+\section{Mục tiêu của đề tài}
+Đề tài hướng tới việc nghiên cứu và xây dựng một bộ kết xuất Path Tracing
+chạy song song trên kiến trúc CUDA của NVIDIA nhằm đạt tốc độ tương tác
+(thời gian thực). Các mục tiêu cụ thể bao gồm:
+\begin{itemize}[noitemsep]
+  \item Hiện thực thuật toán Path Tracing trên GPU bằng CUDA.
+  \item Xây dựng hệ thống vật liệu Lambertian, Metal, Dielectric và camera vật lý
+        có độ sâu trường ảnh, nhòe chuyển động.
+  \item Hiển thị thời gian thực qua cầu nối CUDA--OpenGL và tích lũy mẫu theo
+        thời gian để khử nhiễu.
+  \item Nạp cảnh theo định dạng Mitsuba 3 và cung cấp giao diện điều khiển tương tác.
+\end{itemize}
+
+\section{Phạm vi và đối tượng nghiên cứu}
+% TODO: Mô tả phạm vi (loại cảnh hỗ trợ, định dạng nhập, phần cứng thử nghiệm).
+
+\section{Cấu trúc báo cáo}
+Báo cáo được tổ chức thành năm chương. Chương~\ref{ch:gioi-thieu} giới thiệu đề tài.
+Chương~\ref{ch:ly-thuyet} trình bày nền tảng lý thuyết. Chương~\ref{ch:trien-khai}
+mô tả quá trình triển khai hệ thống. Chương~\ref{ch:danh-gia} trình bày kết quả
+và đánh giá. Chương~\ref{ch:ket-luan} đưa ra kết luận và hướng phát triển.

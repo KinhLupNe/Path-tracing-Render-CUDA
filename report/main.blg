@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: plain.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Warning--empty publisher in shirley2020raytracing
+Warning--empty publisher in shirley2020restoflife
+You've used 7 entries,
+            2118 wiz_defined-function locations,
+            532 strings with 4824 characters,
+and the built_in function-call counts, 1868 in all, are:
+= -- 174
+> -- 93
+< -- 0
++ -- 38
+- -- 30
+* -- 114
+:= -- 331
+add.period$ -- 21
+call.type$ -- 7
+change.case$ -- 34
+chr.to.int$ -- 0
+cite$ -- 9
+duplicate$ -- 70
+empty$ -- 152
+format.name$ -- 30
+if$ -- 382
+int.to.chr$ -- 0
+int.to.str$ -- 7
+missing$ -- 7
+newline$ -- 38
+num.names$ -- 14
+pop$ -- 51
+preamble$ -- 1
+purify$ -- 28
+quote$ -- 0
+skip$ -- 46
+stack$ -- 0
+substring$ -- 61
+swap$ -- 7
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 22
+warning$ -- 2
+while$ -- 16
+width$ -- 8
+write$ -- 75
+(There were 2 warnings)

@@ -53,9 +53,20 @@ public:
         float time = time0 + random_float(local_rand_state) * (time1 - time0);
 
         return Ray(
-            origin + offset, 
+            origin + offset,
             lower_left_corner + s * horizontal + t * vertical - origin - offset,
             time
         );
+    }
+
+    // He so giam sang toi goc theo dinh luat cos^4 (natural vignetting).
+    // theta la goc giua tia va truc quang hoc (huong nhin la -w). Day la thua so
+    // von bi loai bo khi chuan hoa do do camera; giu lai de tai tao hieu ung
+    // toi dan ve phia bien anh nhu mot may anh that.
+    __device__ float vignette_cos4(const Ray &r) const {
+        float cos_theta = dot(unit_vector(r.direction()), -w);
+        if (cos_theta <= 0.0f) return 0.0f;
+        float c2 = cos_theta * cos_theta;
+        return c2 * c2; // cos^4(theta)
     }
 };

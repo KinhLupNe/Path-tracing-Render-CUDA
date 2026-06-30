@@ -1,0 +1,57 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {chapter}{\numberline {1}Giới thiệu đề tài}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Đặt vấn đề}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Mục tiêu của đề tài}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Phạm vi và đối tượng nghiên cứu}{1}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Cấu trúc báo cáo}{1}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Nền tảng lý thuyết}{2}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Đại lượng trắc quang và phương trình kết xuất}{2}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Góc khối và bức xạ}{2}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Hàm phản xạ lưỡng hướng (BRDF)}{3}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Phương trình kết xuất}{3}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Ước lượng Monte Carlo}{3}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Bộ ước lượng cơ bản}{3}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Lấy mẫu theo tầm quan trọng}{4}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Công thức tích phân đường và hệ số suy giảm}{4}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Kết thúc đường đi và Russian Roulette}{5}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Lấy mẫu điểm ảnh và tích lũy theo thời gian}{5}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Lý thuyết lấy mẫu và hiện tượng răng cưa}{5}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Khử răng cưa bằng lấy mẫu ngẫu nhiên}{6}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Tích lũy theo thời gian}{7}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Hiệu chỉnh gamma}{7}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Mô hình vật liệu}{7}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Vật liệu khuếch tán (Lambertian)}{7}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Vật liệu kim loại (Metal)}{8}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Vật liệu điện môi (Dielectric)}{8}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Mô hình camera thấu kính mỏng}{8}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Phương trình đo của camera}{8}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Từ lỗ kim tới thấu kính mỏng}{9}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Sinh tia với khẩu độ hữu hạn}{9}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}Hệ trục và nhòe chuyển động}{10}{subsection.2.5.4}%
+\contentsline {section}{\numberline {2.6}Tìm giao tia--vật thể và cấu trúc tăng tốc}{10}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Giao tia--khối cầu}{10}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Cấu trúc tăng tốc}{10}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Kiến trúc lập trình song song CUDA}{11}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Triển khai hệ thống}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tổng quan kiến trúc hệ thống}{12}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Công nghệ và môi trường phát triển}{12}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Cầu nối CUDA--OpenGL và vòng lặp kết xuất}{13}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Hiện thực nhân Path Tracing trên CUDA}{13}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Hệ thống vật liệu}{14}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Mô hình camera}{15}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Quản lý cảnh và xây dựng thế giới trên GPU}{15}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Nạp cảnh từ Mitsuba 3}{15}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Tích lũy theo thời gian và hiệu chỉnh gamma}{16}{section.3.9}%
+\contentsline {section}{\numberline {3.10}Giao diện điều khiển tương tác}{16}{section.3.10}%
+\contentsline {chapter}{\numberline {4}Đánh giá}{17}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Môi trường thử nghiệm}{17}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Chất lượng kết xuất tổng thể}{17}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Tái tạo các loại vật liệu}{18}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Độ sâu trường ảnh}{19}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Nhòe chuyển động}{19}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Nhận xét chung}{20}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Kết luận và hướng phát triển}{21}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kết luận}{21}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Hạn chế}{21}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Hướng phát triển trong tương lai}{21}{section.5.3}%
+\contentsline {chapter}{Tài liệu tham khảo}{22}{chapter*.12}%

@@ -1,5 +1,6 @@
 #include "gl_loader.h"
 #include "geometry/hittable.h"
+#include "loaders/scene_loader.h"
 #include "math/vec3.h"
 #include "render_kernel.h"
 #include <GLFW/glfw3.h>
@@ -101,7 +102,7 @@ int main() {
 
   float aspect_ratio = float(width) / float(height);
 
-  SceneLoader *loader = new MainSceneLoader();
+  SceneLoader *loader = new TestHardcoreLoader();
   Scene scene = loader->load(aspect_ratio);
   delete loader;
 
@@ -172,7 +173,7 @@ int main() {
     // update_world_wrapper(d_list, sphere_pos, time);
     // Gọi hàng vạn luồng GPU nhảy vào tính toán màu sắc và ghi vào con trỏ
     launch_render_kernel(width, height, d_out, d_accumlation_buffer, d_rand_state, frame_count,
-                         d_world, d_camera, time);
+                         d_world, d_camera, time, scene.vignette_strength);
     frame_count++;
 
     // CUDA xong việc, nhả khóa (Unmap) trả PBO lại cho OpenGL

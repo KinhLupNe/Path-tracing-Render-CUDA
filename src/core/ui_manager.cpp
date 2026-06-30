@@ -17,6 +17,7 @@ bool UIManager::render_panel(Scene& scene, int& frame_count, float framerate) {
     ImGui::NewFrame();
 
     bool camera_changed = false;
+    bool needs_reset = false;
 
     ImGui::Begin("Control Panel");
 
@@ -50,6 +51,8 @@ bool UIManager::render_panel(Scene& scene, int& frame_count, float framerate) {
     if (ImGui::SliderFloat("Aperture", &scene.current_aperture, 0.0f, 0.3f)) camera_changed = true;
     if (ImGui::DragFloat("Focus Dist", &scene.current_focus_dist, 0.1f, 0.1f, 100.0f)) camera_changed = true;
 
+    if (ImGui::SliderFloat("Vignette", &scene.vignette_strength, 0.0f, 2.0f)) needs_reset = true;
+
     if (camera_changed) {
         float aspect_ratio = scene.camera.horizontal.length() / scene.camera.vertical.length();
         Point3 lookfrom = scene.camera.origin;
@@ -62,7 +65,7 @@ bool UIManager::render_panel(Scene& scene, int& frame_count, float framerate) {
 
     ImGui::Render();
 
-    return camera_changed;
+    return camera_changed || needs_reset;
 }
 
 void UIManager::render_draw_data() {

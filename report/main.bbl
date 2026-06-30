@@ -1,0 +1,38 @@
+\begin{thebibliography}{1}
+
+\bibitem{mitsuba2022}
+Wenzel Jakob, S{\'e}bastien Speierer, et~al.
+\newblock Mitsuba 3: A retargetable forward and inverse renderer.
+\newblock \url{https://www.mitsuba-renderer.org/}, 2022.
+
+\bibitem{kajiya1986rendering}
+James~T. Kajiya.
+\newblock The rendering equation.
+\newblock {\em ACM SIGGRAPH Computer Graphics}, 20(4):143--150, 1986.
+
+\bibitem{nvidia2024cuda}
+{NVIDIA Corporation}.
+\newblock Cuda c++ programming guide.
+\newblock \url{https://docs.nvidia.com/cuda/cuda-c-programming-guide/}, 2024.
+
+\bibitem{pharr2016pbrt}
+Matt Pharr, Wenzel Jakob, and Greg Humphreys.
+\newblock {\em Physically Based Rendering: From Theory to Implementation}.
+\newblock Morgan Kaufmann, 3rd edition, 2016.
+
+\bibitem{shirley2020raytracing}
+Peter Shirley, Trevor~David Black, and Steve Hollasch.
+\newblock {\em Ray Tracing in One Weekend}.
+\newblock The ray tracing in one weekend series edition, 2020.
+
+\bibitem{shirley2020restoflife}
+Peter Shirley, Trevor~David Black, and Steve Hollasch.
+\newblock {\em Ray Tracing: The Rest of Your Life}.
+\newblock The ray tracing in one weekend series edition, 2020.
+
+\bibitem{veach1997robust}
+Eric Veach.
+\newblock {\em Robust Monte Carlo Methods for Light Transport Simulation}.
+\newblock PhD thesis, Stanford University, 1997.
+
+\end{thebibliography}

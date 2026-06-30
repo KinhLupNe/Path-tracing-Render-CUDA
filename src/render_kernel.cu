@@ -13,6 +13,15 @@
 #include <curand_uniform.h>
 #include "geometry/hittable_list.h"
 
+// Chuyen mau tu khong gian tuyen tinh (linear) sang sRGB chuan.
+// sRGB dung gamma ~2.2 nhung co mot doan tuyen tinh nho gan 0 (de tranh
+// dao ham vo cuc tai x=0). Day la cong thuc sRGB chinh xac theo chuan IEC 61966-2-1.
+__device__ inline float linear_to_srgb(float x) {
+  if (x <= 0.0f) return 0.0f;
+  if (x <= 0.0031308f) return 12.92f * x;
+  return 1.055f * powf(x, 1.0f / 2.4f) - 0.055f;
+}
+
 // schlick appro -> reflect coef -> he so nay dai dien cho ti le tia phan xa/ tia toi
 __device__ inline float reflectionSchlickA(float cosine, float ir) {
   float r = (1 - ir) / (1 + ir);
@@ -167,7 +176,8 @@ void allocate_and_init_curand(curandState **d_rand_state, int width, int height)
 // Kernel chinh chay tren GP
 __global__ void render_anim_kernel(int width, int height, uchar4 *d_output,
                                    Vec3 *d_accumulation_buffer, Hittable **d_world, Camera **d_camera,
-                                   curandState *d_rand_state, int frame_count, float time) {
+                                   curandState *d_rand_state, int frame_count, float time,
+                                   float vignette_strength) {
   int i = threadIdx.x + blockIdx.x * blockDim.x;
   int j = threadIdx.y + blockIdx.y * blockDim.y;
 
@@ -187,6 +197,13 @@ __global__ void render_anim_kernel(int width, int height, uchar4 *d_output,
   Ray ray_pixel = (*d_camera)->get_ray(s, t, &local_rand_state);
   Color pixel_color = ray_color(ray_pixel, d_world, &local_rand_state);
 
+  // Giam sang toi goc theo dinh luat cos^4: bien anh toi dan, tam anh giu nguyen.
+  // Pha tron theo cuong do: w = 1 khi strength=0 (tat), w = cos^4 khi strength=1.
+  float cos4 = (*d_camera)->vignette_cos4(ray_pixel);
+  float vignette = 1.0f - vignette_strength * (1.0f - cos4);
+  if (vignette < 0.0f) vignette = 0.0f;
+  pixel_color = pixel_color * vignette;
+
   // Temporal accumulation
   Vec3 accumulated_color;
   if (frame_count == 1) {
@@ -198,9 +215,10 @@ __global__ void render_anim_kernel(int width, int height, uchar4 *d_output,
   d_accumulation_buffer[pixel_index] = accumulated_color;
   Color final_color = accumulated_color / float(frame_count);
 
-  final_color.e[0] = sqrt(final_color.e[0]);
-  final_color.e[1] = sqrt(final_color.e[1]);
-  final_color.e[2] = sqrt(final_color.e[2]);
+  // Hieu chinh gamma theo chuan sRGB (gamma ~2.2) thay cho sqrt (gamma 2.0)
+  final_color.e[0] = linear_to_srgb(final_color.e[0]);
+  final_color.e[1] = linear_to_srgb(final_color.e[1]);
+  final_color.e[2] = linear_to_srgb(final_color.e[2]);
   // Ghi mau vao VRAM
   d_output[pixel_index].x = (unsigned char)(255.99f * final_color.x());
   d_output[pixel_index].y = (unsigned char)(255.99f * final_color.y());
@@ -213,14 +231,14 @@ __global__ void render_anim_kernel(int width, int height, uchar4 *d_output,
 // Ham goi tu CPU
 void launch_render_kernel(int width, int height, uchar4 *d_output, Vec3 *d_accumulation_buffer,
                           curandState *d_rand_state, int frame_count, Hittable **d_world, Camera **d_camera,
-                          float time) {
+                          float time, float vignette_strength) {
   int tx = 8;
   int ty = 8;
   dim3 blocks(width / tx + 1, height / ty + 1);
   dim3 threads(tx, ty);
 
   render_anim_kernel<<<blocks, threads>>>(width, height, d_output, d_accumulation_buffer, d_world, d_camera,
-                                          d_rand_state, frame_count, time);
+                                          d_rand_state, frame_count, time, vignette_strength);
 
   cudaDeviceSynchronize();
 }

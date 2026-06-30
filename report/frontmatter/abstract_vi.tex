@@ -1,0 +1,38 @@
+% !TEX root = ../main.tex
+%==============================================================
+%  TÓM TẮT NỘI DUNG ĐỒ ÁN
+%==============================================================
+\thispagestyle{empty}
+\begin{center}
+{\Large\bfseries TÓM TẮT NỘI DUNG ĐỒ ÁN}
+\end{center}
+\vspace{1cm}
+
+Hình ảnh được sinh từ máy tính đóng vai trò quan trọng trong nhiều ứng dụng của
+thế giới thực, từ lĩnh vực giải trí như điện ảnh, trò chơi điện tử đến các lĩnh
+vực kỹ thuật như kiến trúc và y học. Kết xuất dựa trên vật lý (physically based
+rendering) là lớp giải thuật mã hóa các định luật truyền ánh sáng thành mô hình
+toán học để tạo ra hình ảnh có độ chân thực cao. Trong số đó, Path Tracing là
+phương pháp tổng quát và chính xác, song có chi phí tính toán rất lớn do phải mô
+phỏng đường đi của hàng triệu tia sáng bằng tích phân Monte Carlo, dẫn tới thời
+gian kết xuất kéo dài và khó đạt tốc độ tương tác.
+
+Trong đồ án này, tôi nghiên cứu và xây dựng một bộ kết xuất Path Tracing chạy
+song song trên kiến trúc CUDA của NVIDIA nhằm khai thác sức mạnh của GPU để đạt
+tốc độ kết xuất thời gian thực. Hệ thống hiện thực đầy đủ chu trình dò tia trên
+GPU, bao gồm: thuật toán Path Tracing với tích lũy theo thời gian và khử răng
+cưa; hệ thống vật liệu khuếch tán, kim loại và điện môi; mô hình camera thấu kính
+mỏng với hiệu ứng độ sâu trường ảnh và nhòe chuyển động; cơ chế cầu nối
+CUDA--OpenGL cho phép hiển thị trực tiếp từ bộ nhớ video; cùng bộ nạp cảnh theo
+định dạng Mitsuba~3 và giao diện điều khiển tương tác.
+
+Kết quả cho thấy hệ thống có khả năng kết xuất các cảnh thử nghiệm ở tốc độ
+tương tác, đồng thời hội tụ dần về hình ảnh ít nhiễu khi camera giữ nguyên. Đồ án
+cũng chỉ ra các hướng tối ưu và mở rộng trong tương lai như cấu trúc tăng tốc BVH
+và các kỹ thuật giảm nhiễu nâng cao.
+
+\vspace{1.5cm}
+\begin{flushright}
+Sinh viên thực hiện\\[0.3cm]
+\textit{(Ký và ghi rõ họ tên)}
+\end{flushright}

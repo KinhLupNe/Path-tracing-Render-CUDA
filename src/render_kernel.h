@@ -17,7 +17,7 @@ typedef struct curandStateXORWOW curandState;
 void allocate_and_init_curand(curandState **d_rand_state, int width, int height);
 void launch_render_kernel(int width, int height, uchar4 *d_output, Vec3 *d_accumulation_buffer,
                           curandState *d_rand_state, int frame_count, Hittable **d_world, Camera **d_camera,
-                          float time);
+                          float time, float vignette_strength);
 
 void create_world_wrapper(Hittable **d_list, Hittable **d_world, Camera **d_camera, SphereData *d_spheres, int num_spheres, const Camera& host_camera);
 

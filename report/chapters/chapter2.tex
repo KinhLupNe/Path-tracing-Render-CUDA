@@ -1,0 +1,534 @@
+% !TEX root = ../main.tex
+%==============================================================
+\chapter{Nền tảng lý thuyết}
+\label{ch:ly-thuyet}
+
+Chương này trình bày cơ sở lý thuyết của hệ thống. Trước hết ta xây dựng các đại
+lượng trắc quang (radiometry) và phương trình kết xuất mô tả sự cân bằng năng
+lượng ánh sáng. Tiếp theo là phương pháp Monte Carlo dùng để ước lượng tích phân
+trong phương trình đó, kèm các kỹ thuật giảm phương sai. Phần sau trình bày mô
+hình hàm phản xạ (BRDF) cho ba loại vật liệu được hiện thực, mô hình camera thấu
+kính mỏng, bài toán tìm giao tia--vật thể, và cuối cùng là mô hình tính toán song
+song trên CUDA. Nội dung được tham khảo chủ yếu từ loạt sách \emph{Ray Tracing in
+One Weekend}~\cite{shirley2020raytracing, shirley2020restoflife} và sách
+\emph{Physically Based Rendering}~\cite{pharr2016pbrt}.
+
+\section{Đại lượng trắc quang và phương trình kết xuất}
+
+\subsection{Góc khối và bức xạ}
+Để định lượng ánh sáng một cách độc lập với hình học, ta dùng khái niệm \emph{góc
+khối} (solid angle). Một vùng trên mặt cầu đơn vị chắn bởi một hướng nhìn có độ
+lớn góc khối $d\omega$ (đơn vị steradian). Trong hệ tọa độ cầu, vi phân góc khối
+quanh hướng $(\theta,\phi)$ là
+\begin{equation}
+d\omega = \sin\theta\, d\theta\, d\phi .
+\end{equation}
+
+Đại lượng trung tâm của kết xuất dựa trên vật lý là \emph{bức xạ} (radiance)
+$L$: công suất ánh sáng trên một đơn vị diện tích vuông góc, trên một đơn vị góc
+khối, ký hiệu $L(\mathbf{p}, \omega)$ tại điểm $\mathbf{p}$ theo hướng $\omega$
+\cite{pharr2016pbrt}. Bức xạ là đại lượng được \emph{bảo toàn dọc theo tia} trong
+môi trường chân không và là giá trị mà mỗi tia trong path tracer mang theo. Từ
+bức xạ tới, \emph{độ rọi} (irradiance) $E$ trên một bề mặt có pháp tuyến
+$\mathbf{n}$ thu được bằng cách lấy tích phân theo bán cầu, có trọng số cosine:
+\begin{equation}
+\label{eq:irradiance}
+E(\mathbf{p}) = \int_{\Omega} L_i(\mathbf{p}, \omega_i)\,
+                (\omega_i \cdot \mathbf{n})\, d\omega_i .
+\end{equation}
+Thừa số cosine $(\omega_i\cdot\mathbf{n})=\cos\theta_i$ phản ánh việc một chùm
+sáng tới xiên trải năng lượng trên diện tích lớn hơn nên đóng góp ít hơn.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.7,>=Stealth]
+  % surface
+  \fill[gray!12] (-1.7,-0.35) rectangle (1.7,0);
+  \draw[thick] (-1.7,0) -- (1.7,0);
+  \foreach \x in {-1.5,-1.2,...,1.5}
+    \draw[gray] (\x,0) -- (\x-0.18,-0.18);
+  % hemisphere
+  \draw[dashed,gray!70] (-1.4,0) arc (180:0:1.4);
+  % point
+  \coordinate (p) at (0,0);
+  % normal
+  \draw[->,thick] (p) -- (0,1.5) node[above]{$\mathbf{n}$};
+  % incoming ray
+  \draw[->,thick,blue!70!black] (-1.19,1.19) -- (p);
+  \node[blue!70!black] at (-1.0,1.32) {$\omega_i$};
+  % outgoing ray
+  \draw[->,thick,red!75!black] (p) -- (1.19,1.19);
+  \node[red!75!black] at (1.0,1.32) {$\omega_o$};
+  % theta_i angle
+  \draw (0,0.55) arc (90:135:0.55);
+  \node at (-0.18,0.72) {\scriptsize$\theta_i$};
+  % solid angle patch
+  \draw[fill=blue!15,draw=blue!50] (-0.92,0.92) ++(-0.12,0.05)
+        arc (135:120:1.4) -- ++(0.1,0.13) arc (120:135:1.55) -- cycle;
+  \node[blue!60!black] at (-1.05,0.62) {\scriptsize$d\omega_i$};
+  \fill (p) circle (1.1pt);
+  \node[below=2pt] at (p) {$\mathbf{p}$};
+\end{tikzpicture}
+\caption{Hình học tại một điểm bề mặt: bức xạ tới theo hướng $\omega_i$ trong góc
+khối vi phân $d\omega_i$, bức xạ phản xạ theo hướng $\omega_o$, với pháp tuyến
+$\mathbf{n}$ và góc tới $\theta_i$.}
+\label{fig:hemisphere}
+\end{figure}
+
+\subsection{Hàm phản xạ lưỡng hướng (BRDF)}
+Cách một bề mặt phản xạ ánh sáng được mô tả bởi \emph{hàm phân bố phản xạ lưỡng
+hướng} (Bidirectional Reflectance Distribution Function -- BRDF), định nghĩa là
+tỉ số giữa bức xạ phản xạ theo hướng $\omega_o$ và độ rọi vi phân tới từ hướng
+$\omega_i$:
+\begin{equation}
+f_r(\mathbf{p}, \omega_i, \omega_o) =
+   \frac{dL_o(\mathbf{p}, \omega_o)}{L_i(\mathbf{p}, \omega_i)\,
+   (\omega_i \cdot \mathbf{n})\, d\omega_i} .
+\end{equation}
+Một BRDF hợp lệ về mặt vật lý phải thỏa mãn hai tính chất: \emph{tính đối xứng
+Helmholtz} $f_r(\omega_i,\omega_o)=f_r(\omega_o,\omega_i)$, và \emph{bảo toàn
+năng lượng} -- tổng năng lượng phản xạ không vượt quá năng lượng tới
+\cite{pharr2016pbrt}.
+
+\subsection{Phương trình kết xuất}
+Kết hợp BRDF với độ rọi tới, bức xạ rời khỏi điểm $\mathbf{p}$ theo hướng
+$\omega_o$ được cho bởi \emph{phương trình kết xuất} do Kajiya đề
+xuất~\cite{kajiya1986rendering}:
+\begin{equation}
+\label{eq:rendering}
+L_o(\mathbf{p}, \omega_o) = L_e(\mathbf{p}, \omega_o)
+  + \int_{\Omega} f_r(\mathbf{p}, \omega_i, \omega_o)\,
+    L_i(\mathbf{p}, \omega_i)\, (\omega_i \cdot \mathbf{n})\, d\omega_i,
+\end{equation}
+trong đó $L_e$ là bức xạ tự phát (vật liệu phát sáng), số hạng tích phân là bức
+xạ phản xạ. Đây là phương trình \emph{Fredholm loại hai}: ẩn $L$ xuất hiện ở cả
+hai vế vì bức xạ tới $L_i(\mathbf{p},\omega_i)$ tại $\mathbf{p}$ chính là bức xạ
+đi ra $L_o(\mathbf{p}', -\omega_i)$ của điểm $\mathbf{p}'$ mà tia $(\mathbf{p},
+\omega_i)$ chạm tới. Tính đệ quy này khiến lời giải giải tích là bất khả thi với
+cảnh tổng quát, do đó cần phương pháp số.
+
+\section{Ước lượng Monte Carlo}
+
+\subsection{Bộ ước lượng cơ bản}
+Phương pháp Monte Carlo xấp xỉ một tích phân xác định bằng kỳ vọng thống kê. Với
+tích phân $I = \int g(x)\, dx$, nếu lấy $N$ mẫu độc lập $x_k$ theo mật độ xác
+suất $p(x)$ (với $p(x)>0$ ở những nơi $g(x)\neq0$), \emph{bộ ước lượng Monte
+Carlo} là
+\begin{equation}
+\label{eq:montecarlo}
+\langle I \rangle = \frac{1}{N}\sum_{k=1}^{N} \frac{g(x_k)}{p(x_k)} .
+\end{equation}
+Bộ ước lượng này \emph{không chệch} (unbiased): $\mathbb{E}[\langle I\rangle]=I$
+với mọi $N$. Phương sai của nó giảm tỉ lệ $1/N$, nên \emph{sai số chuẩn} (độ lệch
+chuẩn) giảm theo $O(1/\sqrt{N})$. Hệ quả thực tiễn: muốn giảm một nửa nhiễu cần
+gấp bốn lần số mẫu -- đây là nguồn gốc của hiện tượng \emph{nhiễu hạt} (noise)
+đặc trưng và chi phí tính toán lớn của path tracing~\cite{shirley2020restoflife}.
+
+\subsection{Lấy mẫu theo tầm quan trọng}
+Phương sai phụ thuộc mạnh vào mức độ phù hợp giữa $p(x)$ và $g(x)$. Nếu chọn
+$p(x)$ tỉ lệ với $g(x)$ thì tỉ số $g/p$ gần như hằng số và phương sai giảm mạnh;
+đây là ý tưởng \emph{lấy mẫu theo tầm quan trọng} (importance
+sampling)~\cite{veach1997robust}. Trong kết xuất, do tích phân
+\eqref{eq:rendering} chứa thừa số cosine và BRDF, ta thường lấy mẫu hướng
+$\omega_i$ theo phân bố cosine hoặc theo hình dạng của BRDF thay vì đều trên bán
+cầu. Hệ thống hiện tại lấy mẫu khuếch tán theo phân bố cosine (Mục~\ref{sec:vatlieu});
+việc lấy mẫu trực tiếp nguồn sáng (Next Event Estimation) là hướng mở rộng nêu ở
+Chương~\ref{ch:ket-luan}.
+
+\subsection{Công thức tích phân đường và hệ số suy giảm}
+Khai triển đệ quy phương trình \eqref{eq:rendering} cho \emph{công thức tích phân
+đường} (path integral): bức xạ tới camera là tổng đóng góp của mọi đường ánh sáng
+nối nguồn sáng tới mắt qua một số lần phản xạ. Path tracing ước lượng tổng này
+bằng cách, tại mỗi điểm va chạm, lấy \emph{một} hướng tán xạ ngẫu nhiên và lần
+theo tia đó -- tạo thành một đường đi ngẫu nhiên. Đóng góp của đường được tích
+lũy qua \emph{hệ số suy giảm} (throughput) $\beta$, cập nhật nhân dồn sau mỗi va
+chạm:
+\begin{equation}
+\label{eq:throughput}
+\beta_n = \beta_{n-1}\,
+          \frac{f_r(\mathbf{p}_n,\omega_i,\omega_o)\,(\omega_i\cdot\mathbf{n})}
+               {p(\omega_i)},
+\qquad \beta_0 = 1 .
+\end{equation}
+Khi tia thoát khỏi cảnh và gặp nguồn sáng nền, bức xạ thu được bằng tích của bức
+xạ nền với $\beta$. Với cách lấy mẫu khuếch tán theo cosine, thừa số cosine và
+mẫu số $p(\omega_i)$ triệt tiêu nhau, khiến việc cập nhật $\beta$ rút gọn về phép
+nhân với albedo -- đúng như hiện thực trong mã nguồn (Chương~\ref{ch:trien-khai}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.0,>=Stealth,
+   surf/.style={line width=1.2pt,gray!70}]
+  % camera
+  \node[draw,fill=gray!10,minimum width=0.7cm,minimum height=0.5cm] (cam) at (0,0) {};
+  \node[below=1pt of cam,font=\small] {Camera};
+  % bounce points
+  \coordinate (b1) at (2.3,0.9);
+  \coordinate (b2) at (4.4,-0.4);
+  \coordinate (b3) at (6.2,1.1);
+  % surfaces (short segments) with normals
+  \draw[surf] ($(b1)+(-0.45,-0.25)$) -- ($(b1)+(0.45,0.25)$);
+  \draw[surf] ($(b2)+(-0.5,0.1)$) -- ($(b2)+(0.5,-0.1)$);
+  \draw[surf] ($(b3)+(-0.4,-0.3)$) -- ($(b3)+(0.4,0.3)$);
+  % light source
+  \node[star,star points=8,star point ratio=0.6,fill=yellow!80!orange,
+        draw=orange,minimum size=0.9cm] (L) at (7.8,2.3) {};
+  \node[above=0pt of L,font=\small] {Nguồn sáng};
+  % path segments
+  \draw[->,thick,blue!70!black] (cam.east) -- (b1) node[midway,above,font=\scriptsize]{$\beta_0$};
+  \draw[->,thick,blue!70!black] (b1) -- (b2) node[midway,above,font=\scriptsize]{$\beta_1$};
+  \draw[->,thick,blue!70!black] (b2) -- (b3) node[midway,below,font=\scriptsize]{$\beta_2$};
+  \draw[->,thick,blue!70!black] (b3) -- (L) node[midway,above left,font=\scriptsize]{$\beta_3$};
+  % bounce dots
+  \foreach \b in {b1,b2,b3} \fill (\b) circle (1.6pt);
+  \node[right=1pt,font=\scriptsize] at (b1) {$\mathbf{p}_1$};
+  \node[right=1pt,font=\scriptsize] at (b2) {$\mathbf{p}_2$};
+  \node[right=1pt,font=\scriptsize] at (b3) {$\mathbf{p}_3$};
+\end{tikzpicture}
+\caption{Một đường đi ngẫu nhiên trong Path Tracing: tia xuất phát từ camera, tán
+xạ qua các điểm va chạm $\mathbf{p}_1,\mathbf{p}_2,\dots$ và kết thúc tại nguồn
+sáng; hệ số suy giảm $\beta$ được nhân dồn dọc theo đường.}
+\label{fig:pathtrace}
+\end{figure}
+
+\subsection{Kết thúc đường đi và Russian Roulette}
+Vì một đường có thể phản xạ vô hạn, cần điều kiện dừng. Cách đơn giản là giới hạn
+độ sâu tối đa, song điều này tạo ra sai lệch (bias) do bỏ qua các đường dài. Một
+giải pháp không chệch là \emph{Russian Roulette}~\cite{pharr2016pbrt}: tại mỗi
+bước, kết thúc đường với xác suất $q$ và chia phần còn lại cho $1-q$ để giữ kỳ
+vọng không đổi. Hệ thống áp dụng giới hạn độ sâu (tối đa 50 lần dội) kết hợp dừng
+sớm khi $\beta$ suy giảm gần bằng 0 -- một xấp xỉ thực dụng cho chế độ thời gian
+thực.
+
+\section{Lấy mẫu điểm ảnh và tích lũy theo thời gian}
+
+\subsection{Lý thuyết lấy mẫu và hiện tượng răng cưa}
+Quá trình tạo ảnh số thực chất là \emph{lấy mẫu} (sampling) một hàm ảnh liên tục
+$f(x,y)$ -- giá trị bức xạ tại mọi điểm trên mặt phẳng ảnh -- tại một lưới điểm
+ảnh rời rạc, rồi \emph{tái dựng} (reconstruction) ảnh hiển thị từ các mẫu đó. Cơ
+sở lý thuyết của quá trình này là phân tích Fourier~\cite{pharr2016pbrt}.
+
+Mỗi hàm $f$ có một \emph{phổ tần số} $F = \mathcal{F}\{f\}$ thu được qua biến đổi
+Fourier. Việc lấy mẫu đều với bước $T$ tương đương nhân $f$ với một chuỗi xung
+Dirac (Dirac comb) khoảng cách $T$. Theo định lý tích chập, trong miền tần số
+phép nhân này trở thành tích chập của phổ $F$ với một chuỗi xung khoảng cách
+$1/T$, tạo ra \emph{vô số bản sao} của phổ gốc lặp lại theo chu kỳ $1/T$:
+\begin{equation}
+\mathcal{F}\Big\{ f \cdot \textstyle\sum_n \delta(x - nT)\Big\}
+   = F * \frac{1}{T}\sum_k \delta\!\Big(\nu - \frac{k}{T}\Big).
+\end{equation}
+Để khôi phục $f$, ta lọc lấy bản sao trung tâm bằng một bộ lọc thông thấp lý
+tưởng. Điều này khả thi \emph{nếu và chỉ nếu} các bản sao không chồng lấn, tức
+hàm phải \emph{giới hạn dải tần} (band-limited) với tần số lớn nhất $\nu_{\max}$,
+và tần số lấy mẫu thỏa
+\begin{equation}
+\label{eq:nyquist}
+\frac{1}{T} \;>\; 2\,\nu_{\max} .
+\end{equation}
+Bất đẳng thức~\eqref{eq:nyquist} chính là \emph{định lý lấy mẫu
+Nyquist--Shannon}; ngưỡng $2\nu_{\max}$ gọi là \emph{tần số Nyquist}.
+
+Trong kết xuất, điều kiện này gần như luôn bị vi phạm: biên hình học, bóng đổ
+sắc nét hay hoa văn texture tạo ra các \emph{bước nhảy} có phổ trải tới vô hạn
+nên ảnh \emph{không} giới hạn dải tần. Khi đó các bản sao phổ chồng lấn, năng
+lượng tần số cao ``giả dạng'' thành tần số thấp sau khi tái dựng, sinh ra các
+sai lệch nhìn thấy được gọi là \emph{răng cưa} (aliasing): biên xiên bị bậc
+thang, hoa văn nhỏ biến thành vân moiré.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.0,>=Stealth]
+  % ---- top: adequate sampling ----
+  \begin{scope}[yshift=2.2cm]
+    \draw[->] (-3.2,0) -- (3.2,0) node[right,font=\scriptsize]{$\nu$};
+    \foreach \c in {-2,0,2} {
+      \draw[blue!60!black,fill=blue!12] (\c-0.7,0) -- (\c,0.8) -- (\c+0.7,0) -- cycle;
+    }
+    \node[font=\scriptsize] at (0,1.0) {phổ gốc};
+    \node[font=\scriptsize,gray] at (2.1,0.95) {bản sao};
+    \node[left,font=\scriptsize] at (-3.2,0.55) {(a)};
+  \end{scope}
+  % ---- bottom: undersampling -> overlap ----
+  \begin{scope}
+    \draw[->] (-3.2,0) -- (3.2,0) node[right,font=\scriptsize]{$\nu$};
+    \foreach \c in {-1.1,0,1.1} {
+      \draw[red!60!black,fill=red!12] (\c-0.7,0) -- (\c,0.8) -- (\c+0.7,0) -- cycle;
+    }
+    % overlap markers
+    \fill[red!45,opacity=0.6] (-0.55,0) -- (-0.55,0.2) -- (-0.4,0) -- cycle;
+    \fill[red!45,opacity=0.6] (0.55,0) -- (0.55,0.2) -- (0.4,0) -- cycle;
+    \node[font=\scriptsize,red!70!black] at (0.0,1.0) {vùng chồng lấn $\to$ răng cưa};
+    \node[left,font=\scriptsize] at (-3.2,0.55) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Phổ tần số sau khi lấy mẫu gồm phổ gốc và các bản sao lặp lại. (a) Khi
+thỏa điều kiện Nyquist~\eqref{eq:nyquist}, các bản sao tách rời nên khôi phục
+được tín hiệu. (b) Khi lấy mẫu thiếu (hoặc tín hiệu không giới hạn dải tần), các
+bản sao chồng lấn, gây hiện tượng răng cưa.}
+\label{fig:nyquist}
+\end{figure}
+
+\subsection{Khử răng cưa bằng lấy mẫu ngẫu nhiên}
+Có hai hướng chống răng cưa. Hướng thứ nhất là \emph{tiền lọc} (prefiltering) --
+làm mượt hàm ảnh để giới hạn dải tần trước khi lấy mẫu -- nhưng nhìn chung không
+khả thi vì hàm ảnh không có dạng giải tích. Hướng thứ hai, thực dụng hơn, là
+\emph{tăng tần số lấy mẫu}: bắn nhiều tia trên mỗi điểm ảnh (\emph{siêu lấy mẫu},
+supersampling) để đẩy tần số Nyquist lên cao, thu hẹp vùng bị răng cưa.
+
+Điều quan trọng là path tracer dùng \emph{lấy mẫu ngẫu nhiên} (stochastic
+sampling) thay vì lưới đều. Với mẫu đều, năng lượng tần số cao chồng lấn tạo ra
+các vân răng cưa có cấu trúc; còn khi điểm lấy mẫu được làm \emph{nhiễu} ngẫu
+nhiên, năng lượng đó bị phân tán thành \emph{nhiễu} (noise) không cấu trúc. Mắt
+người ít nhạy với nhiễu hơn nhiều so với các vân răng cưa có quy luật, nên đây là
+sự đánh đổi có lợi~\cite{pharr2016pbrt}.
+
+Về mặt hình thức, giá trị một điểm ảnh là tích phân của hàm ảnh nhân với một
+\emph{hàm lọc tái dựng} $r$ trên miền điểm ảnh, $I_{ij} = \int r(x,y)\,f(x,y)\,
+dx\,dy$. Path tracer ước lượng tích phân này bằng Monte Carlo
+\eqref{eq:montecarlo} với các mẫu được làm nhiễu ngẫu nhiên trong ô điểm ảnh.
+Mỗi khung dịch điểm bắn tia một lượng $(\xi_u,\xi_v)\in[0,1)^2$,
+\begin{equation}
+s = \frac{i + \xi_u}{W}, \qquad t = 1 - \frac{j + \xi_v}{H},
+\end{equation}
+với $(i,j)$ là chỉ số điểm ảnh và $W\times H$ là độ phân giải (hệ thống dùng hàm
+lọc hộp, tức trọng số đều trong ô). Trung bình của nhiều mẫu vừa khử răng cưa
+biên, vừa hội tụ về giá trị tích phân đúng~\cite{shirley2020raytracing}.
+
+\subsection{Tích lũy theo thời gian}
+Trong chế độ tương tác, mỗi khung chỉ kịp lấy một mẫu/điểm ảnh nên ảnh rất nhiễu.
+\emph{Tích lũy theo thời gian} (temporal accumulation) tận dụng việc camera đứng
+yên: màu của các khung liên tiếp được cộng dồn rồi lấy trung bình,
+\begin{equation}
+C_{\text{out}} = \frac{1}{F}\sum_{f=1}^{F} C_f ,
+\end{equation}
+trong đó $F$ là số khung kể từ lần đặt lại gần nhất. Đây chính là bộ ước lượng
+\eqref{eq:montecarlo} được tích lũy dần theo thời gian: càng nhiều khung, $F$ càng
+lớn, ảnh càng hội tụ (giảm nhiễu). Khi người dùng di chuyển camera, $F$ được đặt
+lại về 1 để loại bỏ các mẫu cũ không còn hợp lệ.
+
+\subsection{Hiệu chỉnh gamma}
+Tính toán ánh sáng diễn ra trong không gian màu \emph{tuyến tính}, nhưng màn hình
+kỳ vọng giá trị đã mã hóa gamma. Trước khi hiển thị, màu được hiệu chỉnh bằng
+$C' = C^{1/\gamma}$; hệ thống dùng $\gamma = 2$, tức lấy căn bậc hai từng kênh,
+giúp vùng tối hiển thị đúng độ sáng cảm nhận~\cite{shirley2020raytracing}.
+
+\section{Mô hình vật liệu}
+\label{sec:vatlieu}
+Mỗi vật liệu định nghĩa một hàm \emph{tán xạ}: cho tia tới, trả về tia tán xạ và
+hệ số suy giảm (attenuation). Hệ thống hiện thực ba mô hình kinh điển của loạt
+\emph{Ray Tracing in One Weekend}~\cite{shirley2020raytracing}.
+
+\subsection{Vật liệu khuếch tán (Lambertian)}
+Bề mặt khuếch tán lý tưởng có BRDF hằng số:
+\begin{equation}
+f_r = \frac{\rho}{\pi},
+\end{equation}
+với $\rho$ là albedo (hệ số phản xạ) và hệ số $\pi$ bảo đảm bảo toàn năng lượng
+khi lấy tích phân theo bán cầu. Để lấy mẫu hiệu quả, ta sinh hướng tán xạ theo
+\emph{phân bố cosine} bằng một mẹo hình học: cộng pháp tuyến với một điểm ngẫu
+nhiên trên mặt cầu đơn vị,
+\begin{equation}
+\omega_i = \mathbf{n} + \mathbf{r}_{\text{unit}}, \qquad
+\|\mathbf{r}_{\text{unit}}\| = 1 .
+\end{equation}
+Khi đó mật độ lấy mẫu $p(\omega_i)=\cos\theta_i/\pi$ khớp với thừa số cosine và
+BRDF, làm phép cập nhật throughput \eqref{eq:throughput} rút gọn còn phép nhân
+với albedo $\rho$~\cite{shirley2020restoflife}.
+
+\subsection{Vật liệu kim loại (Metal)}
+Kim loại phản xạ gương: tia phản xạ quanh pháp tuyến theo
+\begin{equation}
+\label{eq:reflect}
+\mathbf{r} = \mathbf{d} - 2(\mathbf{d}\cdot\mathbf{n})\,\mathbf{n},
+\end{equation}
+với $\mathbf{d}$ là hướng tia tới đã chuẩn hóa. Để mô phỏng bề mặt nhám, hướng
+phản xạ được nhiễu loạn bằng một vector ngẫu nhiên trong quả cầu bán kính
+\emph{fuzz}: $\mathbf{r}' = \mathbf{r} + \text{fuzz}\cdot\mathbf{r}_{\text{rand}}$.
+Giá trị fuzz càng lớn, phản chiếu càng mờ; tia tán xạ chui xuống dưới bề mặt sẽ
+bị loại bỏ.
+
+\subsection{Vật liệu điện môi (Dielectric)}
+Vật liệu trong suốt (thủy tinh, nước) vừa phản xạ vừa khúc xạ. Phần khúc xạ tuân
+theo \emph{định luật Snell}:
+\begin{equation}
+\label{eq:snell}
+\eta \sin\theta_i = \eta' \sin\theta_t,
+\end{equation}
+với $\eta,\eta'$ là chiết suất hai môi trường, $\theta_i,\theta_t$ là góc tới và
+góc khúc xạ. Khi $\frac{\eta}{\eta'}\sin\theta_i > 1$, phương trình
+\eqref{eq:snell} vô nghiệm với $\sin\theta_t$: xảy ra \emph{phản xạ toàn phần},
+tia buộc phải phản xạ theo \eqref{eq:reflect}.
+
+Tỉ lệ năng lượng phản xạ so với khúc xạ được cho bởi \emph{phương trình Fresnel},
+vốn phức tạp vì phụ thuộc phân cực. Trong đồ họa, ta dùng \emph{xấp xỉ Schlick}
+chính xác cao và rẻ về tính toán~\cite{pharr2016pbrt}:
+\begin{equation}
+\label{eq:schlick}
+R(\theta) = R_0 + (1 - R_0)\,(1 - \cos\theta)^5,
+\qquad R_0 = \left(\frac{\eta - \eta'}{\eta + \eta'}\right)^2,
+\end{equation}
+trong đó $R_0$ là hệ số phản xạ ở góc tới vuông góc. Thay vì tính cả hai tia phản
+xạ và khúc xạ rồi pha trộn, path tracer dùng cách \emph{lấy mẫu ngẫu nhiên}: sinh
+một số $\xi\in[0,1)$ và chọn phản xạ nếu $\xi < R(\theta)$, ngược lại thì khúc xạ.
+Theo nghĩa thống kê qua nhiều mẫu, tỉ lệ này tái tạo đúng hệ số Fresnel mà mỗi
+tia chỉ phải lần theo một nhánh~\cite{shirley2020raytracing}.
+
+\section{Mô hình camera thấu kính mỏng}
+
+\subsection{Phương trình đo của camera}
+Một cách hình thức, giá trị mà một điểm ảnh ghi nhận không phải là bức xạ của một
+tia đơn lẻ, mà là một \emph{phép đo} (measurement) trên toàn bộ ánh sáng đi vào
+hệ quang học. Theo PBRT~\cite{pharr2016pbrt}, đáp ứng $I_j$ của điểm ảnh thứ $j$
+được cho bởi \emph{phương trình đo} (measurement equation):
+\begin{equation}
+\label{eq:measurement}
+I_j = \int_{A_{\text{film}}} \int_{\Omega}
+       W_e^{(j)}(\mathbf{p}, \omega)\, L_i(\mathbf{p}, \omega)\,
+       |\cos\theta|\; d\omega\, dA(\mathbf{p}),
+\end{equation}
+trong đó tích phân lấy trên diện tích phim $A_{\text{film}}$ và bán cầu hướng
+$\Omega$; $L_i$ là bức xạ tới, còn $W_e^{(j)}$ là \emph{hàm tầm quan trọng}
+(importance) -- đặc trưng độ nhạy của cảm biến với tia $(\mathbf{p},\omega)$,
+đóng vai trò đối ngẫu với bức xạ phát ra của một nguồn sáng. Nhiệm vụ của mô hình
+camera là sinh các tia sao cho việc lấy mẫu Monte Carlo tích phân
+\eqref{eq:measurement} là hợp lệ.
+
+\subsection{Từ lỗ kim tới thấu kính mỏng}
+Với camera \emph{lỗ kim} (pinhole) lý tưởng, khẩu độ thu về một điểm: hàm tầm
+quan trọng $W_e$ suy biến thành một xung Dirac theo hướng, nên mỗi điểm trên phim
+chỉ ứng với \emph{một} tia duy nhất và mọi vật thể đều sắc nét bất kể độ sâu.
+Đây là lý do ảnh pinhole không có hiệu ứng nhòe của ống kính thật.
+
+Để tái hiện \emph{độ sâu trường ảnh} (depth of field), ta cần một khẩu độ hữu
+hạn. Mô hình \emph{thấu kính mỏng} (thin lens)~\cite{pharr2016pbrt} xấp xỉ hệ
+quang học bằng một thấu kính lý tưởng độ dày bằng 0, tuân theo \emph{phương trình
+thấu kính Gauss}:
+\begin{equation}
+\label{eq:thinlens}
+\frac{1}{z'} - \frac{1}{z} = \frac{1}{f},
+\end{equation}
+với $z$ là khoảng cách từ vật tới thấu kính, $z'$ là khoảng cách ảnh, và $f$ là
+tiêu cự. Phương trình \eqref{eq:thinlens} chỉ ra rằng các vật ở những khoảng cách
+$z$ khác nhau hội tụ tại những mặt phẳng ảnh $z'$ khác nhau. Do cảm biến đặt cố
+định, chỉ những vật nằm tại \emph{mặt phẳng lấy nét} (khoảng cách
+\emph{focus distance}) mới hội tụ thành điểm sắc nét; vật ở khoảng cách khác trải
+thành một đĩa gọi là \emph{vòng tròn nhòe} (circle of confusion), gây hiệu ứng mờ
+nhòe. Bán kính vòng nhòe -- và do đó độ mạnh của hiệu ứng -- tỉ lệ với bán kính
+khẩu độ.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.0,>=Stealth]
+  % sensor plane
+  \draw[line width=1.4pt,gray!70] (0,-1.4) -- (0,1.4);
+  \node[gray!70,font=\scriptsize] at (0,1.7) {Cảm biến};
+  % lens
+  \draw[blue!55!black,line width=1pt] (3,0) ellipse (0.18 and 1.2);
+  \node[blue!55!black,font=\scriptsize] at (3,-1.5) {Thấu kính};
+  \draw[<->,blue!55!black] (3.35,0) -- (3.35,1.2) node[midway,right,font=\scriptsize]{$R$};
+  % focal plane
+  \draw[dashed,green!45!black] (6.5,-1.5) -- (6.5,1.5);
+  \node[green!45!black,font=\scriptsize,align=center] at (6.5,1.8) {Mặt phẳng\\lấy nét};
+  % in-focus point (sharp): converges to single sensor point
+  \coordinate (F) at (6.5,0.7);
+  \fill[green!45!black] (F) circle (1.6pt);
+  \coordinate (S) at (0,-0.55);
+  \draw[green!50!black] (S) -- (3,0.95) -- (F);
+  \draw[green!50!black] (S) -- (3,-0.95) -- (F);
+  \fill[green!45!black] (S) circle (1.4pt);
+  \node[green!45!black,font=\scriptsize,left] at (S) {nét};
+  % out-of-focus point: spreads -> circle of confusion
+  \coordinate (O) at (5.2,-0.6);
+  \fill[red!70!black] (O) circle (1.6pt);
+  \draw[red!65!black] (O) -- (3,0.95) -- (0,0.95);
+  \draw[red!65!black] (O) -- (3,-0.95) -- (0,0.2);
+  \draw[red!65!black,line width=1.3pt] (0,0.2) -- (0,0.95);
+  \node[red!70!black,font=\scriptsize,right=1pt] at (O) {ngoài nét};
+  \node[red!70!black,font=\scriptsize,align=left] at (-0.55,1.0) {vòng\\nhòe};
+\end{tikzpicture}
+\caption{Mô hình thấu kính mỏng. Điểm nằm trên mặt phẳng lấy nét (xanh) hội tụ
+thành một điểm sắc nét trên cảm biến; điểm ngoài mặt phẳng lấy nét (đỏ) trải ra
+thành vòng tròn nhòe, tạo hiệu ứng độ sâu trường ảnh.}
+\label{fig:thinlens}
+\end{figure}
+
+\subsection{Sinh tia với khẩu độ hữu hạn}
+Tích phân \eqref{eq:measurement} trên diện tích thấu kính được ước lượng bằng
+Monte Carlo: thay vì một tia, ta lấy mẫu một điểm trên đĩa thấu kính bán kính
+$R=\text{aperture}/2$. Quy trình sinh tia~\cite{pharr2016pbrt,shirley2020raytracing}
+gồm ba bước:
+\begin{enumerate}[noitemsep]
+  \item Dựng tia chính đi từ tâm thấu kính qua điểm ảnh $(s,t)$.
+  \item Xác định \emph{điểm lấy nét} là giao của tia chính với mặt phẳng lấy nét
+        (cách camera một khoảng focus distance) -- điểm này luôn sắc nét.
+  \item Lấy ngẫu nhiên một điểm trên đĩa thấu kính làm gốc tia mới, hướng tia mới
+        đi qua đúng điểm lấy nét ở bước~2.
+\end{enumerate}
+Vì mọi tia lấy mẫu đều đi qua cùng điểm lấy nét, vật tại mặt phẳng lấy nét vẫn
+sắc nét; còn vật ngoài mặt phẳng đó nhận các tia từ những vị trí thấu kính khác
+nhau nên bị nhòe, đúng như mô tả của vòng tròn nhòe. Khi khẩu độ bằng 0, mô hình
+thoái biến về camera lỗ kim.
+
+\subsection{Hệ trục và nhòe chuyển động}
+Trường nhìn dọc $\theta$ xác định chiều cao khung nhìn qua $h=\tan(\theta/2)$. Hệ
+trục camera trực chuẩn $(\mathbf{u},\mathbf{v},\mathbf{w})$ được dựng từ vị trí
+đặt máy (\emph{lookfrom}), điểm nhìn (\emph{lookat}) và vector hướng lên
+(\emph{vup}):
+\begin{equation}
+\mathbf{w} = \frac{\text{lookfrom}-\text{lookat}}{\|\cdot\|},\quad
+\mathbf{u} = \frac{\text{vup}\times\mathbf{w}}{\|\cdot\|},\quad
+\mathbf{v} = \mathbf{w}\times\mathbf{u}.
+\end{equation}
+Để mô phỏng \emph{nhòe chuyển động} (motion blur), phương trình đo
+\eqref{eq:measurement} được mở rộng thêm một tích phân theo \emph{thời gian phơi
+sáng}. Hệ thống ước lượng tích phân này bằng cách gán cho mỗi tia một mốc thời
+gian ngẫu nhiên trong khoảng $[t_0,t_1]$; vật thể chuyển động được nội suy vị trí
+tuyến tính theo thời gian của tia, nên ảnh tích lũy thể hiện vệt mờ tự
+nhiên~\cite{shirley2020raytracing}.
+
+\section{Tìm giao tia--vật thể và cấu trúc tăng tốc}
+
+\subsection{Giao tia--khối cầu}
+Phép toán cốt lõi của mỗi bước dò tia là tìm giao điểm gần nhất giữa tia và vật
+thể. Một tia tham số hóa $\mathbf{r}(t)=\mathbf{o}+t\mathbf{d}$ giao khối cầu tâm
+$\mathbf{c}$, bán kính $r$ khi $\|\mathbf{r}(t)-\mathbf{c}\|^2 = r^2$. Khai triển
+cho phương trình bậc hai $at^2 + bt + c = 0$ với
+\begin{equation}
+a = \mathbf{d}\cdot\mathbf{d},\quad
+b = 2\,\mathbf{d}\cdot(\mathbf{o}-\mathbf{c}),\quad
+c = (\mathbf{o}-\mathbf{c})\cdot(\mathbf{o}-\mathbf{c}) - r^2 .
+\end{equation}
+Biệt thức $\Delta=b^2-4ac$ âm nghĩa là không có giao; ngược lại, nghiệm nhỏ hơn
+nằm trong khoảng $[t_{\min},t_{\max}]$ cho điểm va chạm gần nhất. Pháp tuyến tại
+điểm giao $\mathbf{p}$ là $\mathbf{n}=(\mathbf{p}-\mathbf{c})/r$. Cận dưới
+$t_{\min}$ dương nhỏ giúp tránh \emph{shadow acne} -- hiện tượng tia thứ cấp tự
+giao lại bề mặt vừa xuất phát do sai số dấu phẩy động~\cite{shirley2020raytracing}.
+
+\subsection{Cấu trúc tăng tốc}
+Khi cảnh có $n$ vật thể, duyệt tuyến tính toàn bộ danh sách tốn $O(n)$ cho mỗi
+tia, không khả thi với cảnh phức tạp. Các \emph{cấu trúc tăng tốc} như cây phân
+cấp khối bao (Bounding Volume Hierarchy -- BVH) bao mỗi nhóm vật thể trong một
+khối bao (thường là hộp căn trục AABB) và tổ chức thành cây nhị phân. Nhờ kiểm
+tra giao với khối bao trước, ta loại bỏ sớm những nhánh tia không thể chạm, giảm
+độ phức tạp trung bình xuống $O(\log n)$. Chất lượng cây phụ thuộc cách phân
+hoạch; \emph{Surface Area Heuristic} (SAH) là tiêu chí phổ biến để chọn mặt phân
+chia tối ưu~\cite{pharr2016pbrt}. Phiên bản hiện tại dùng duyệt tuyến tính; tích
+hợp BVH là hướng tối ưu được bàn ở Chương~\ref{ch:ket-luan}.
+
+\section{Kiến trúc lập trình song song CUDA}
+CUDA là nền tảng tính toán song song đa dụng của NVIDIA, cho phép tận dụng hàng
+nghìn nhân của GPU~\cite{nvidia2024cuda}. Path tracing có tính \emph{song song dữ
+liệu} lý tưởng: mỗi điểm ảnh được tính độc lập, hoàn toàn phù hợp mô hình SIMT
+(Single Instruction, Multiple Threads) của GPU.
+
+Trong mô hình CUDA, công việc được tổ chức thành lưới (grid) gồm nhiều khối
+(block), mỗi khối chứa nhiều luồng (thread) chạy đồng thời theo nhóm 32 luồng
+(warp). Hàm chạy trên GPU gọi là \emph{kernel}; khi khởi chạy, mỗi luồng xác định
+điểm ảnh phụ trách qua chỉ số toàn cục tính từ \texttt{blockIdx},
+\texttt{blockDim} và \texttt{threadIdx}. Vì mỗi luồng cần một dãy số ngẫu nhiên
+độc lập cho Monte Carlo, hệ thống dùng thư viện \texttt{cuRAND} với hạt giống
+riêng cho từng điểm ảnh. Kích thước khối (ví dụ $8\times8=64$ luồng) ảnh hưởng
+trực tiếp tới mức độ chiếm dụng (occupancy) và hiệu năng. Một điểm cần lưu ý là
+sự \emph{phân kỳ luồng} (warp divergence): khi các tia trong cùng warp rẽ nhánh
+khác nhau (ví dụ chạm vật liệu khác loại), GPU phải thực thi tuần tự các nhánh,
+làm giảm hiệu suất -- đây là đặc thù quan trọng khi tối ưu path tracer trên GPU.

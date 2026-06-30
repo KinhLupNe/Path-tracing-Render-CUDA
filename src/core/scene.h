@@ -27,6 +27,9 @@ public:
     float current_aperture = 0.0f;
     float current_focus_dist = 10.0f;
 
+    // Cuong do vignette: 0 = tat, 1 = dung cos^4 vat ly, >1 = lam toi qua muc.
+    float vignette_strength = 1.0f;
+
     Scene() {}
 
     void add_sphere(const Point3& center, float radius, const Material& mat) {

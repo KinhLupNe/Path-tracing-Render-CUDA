@@ -1,0 +1,127 @@
+% !TEX root = ../main.tex
+%==============================================================
+\chapter{Đánh giá}
+\label{ch:danh-gia}
+
+Chương này trình bày kết quả thực nghiệm của hệ thống đã hiện thực ở
+Chương~\ref{ch:trien-khai}. Phần đầu mô tả cấu hình phần cứng và phần mềm dùng
+để thử nghiệm. Phần sau phân tích các ảnh kết xuất theo từng nhóm hiệu ứng:
+chất lượng tổng thể, tái tạo vật liệu, độ sâu trường ảnh và nhòe chuyển động,
+kèm theo số liệu hiệu năng đo trực tiếp trong quá trình kết xuất.
+
+\section{Môi trường thử nghiệm}
+Toàn bộ thử nghiệm được thực hiện trên một máy tính xách tay với cấu hình nêu ở
+Bảng~\ref{tab:moi-truong}. Card đồ họa thuộc phân khúc phổ thông, dung lượng bộ
+nhớ video giới hạn ở 4\,GB, nên kết quả hiệu năng phản ánh mức trung bình thấp
+của phần cứng người dùng phổ thông.
+
+\begin{table}[H]
+  \centering
+  \caption{Cấu hình môi trường thử nghiệm.}
+  \label{tab:moi-truong}
+  \begin{tabularx}{\textwidth}{l X}
+    \toprule
+    \textbf{Thành phần} & \textbf{Thông số} \\
+    \midrule
+    CPU              & AMD Ryzen 5 5600H, 6 nhân 12 luồng \\
+    GPU              & NVIDIA GeForce GTX 1650, 4\,GB GDDR \\
+    Bộ nhớ hệ thống  & 16\,GB \\
+    Hệ điều hành     & Windows 11, 64-bit \\
+    CUDA Toolkit     & phiên bản 12.6 \\
+    Trình biên dịch  & MSVC kết hợp \texttt{nvcc} \\
+    Độ phân giải kết xuất & 1920 $\times$ 1014 điểm ảnh \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Hiệu năng được đo bằng hai chỉ số hiển thị trực tiếp trên bảng điều khiển: thời
+gian kết xuất trung bình của một khung hình tính bằng mili giây và số khung hình
+trên giây tương ứng. Mỗi khung hình lấy một mẫu cho mỗi điểm ảnh, sau đó cộng dồn
+vào bộ đệm tích lũy nên ảnh hội tụ dần theo thời gian. Số khung hình tích lũy
+được ghi nhận để thể hiện mức độ hội tụ của ảnh tại thời điểm chụp.
+
+\section{Chất lượng kết xuất tổng thể}
+Hình~\ref{fig:best-render} là ảnh kết xuất trên cảnh có mật độ vật thể cao gồm
+vài trăm khối cầu với đủ ba loại vật liệu. Ảnh đạt được sau 1846 khung hình tích
+lũy, cho thấy thuật toán cộng dồn theo thời gian khử được phần lớn nhiễu Monte
+Carlo và tái tạo các hiệu ứng phản xạ, khúc xạ, đổ bóng mềm một cách nhất quán.
+Ở cảnh đông đối tượng như vậy, thời gian mỗi khung tăng lên khoảng 542\,ms tương
+ứng 1{,}8 khung hình trên giây, do mỗi tia phải duyệt tuyến tính qua toàn bộ
+danh sách vật thể để tìm giao điểm. Đây là hệ quả trực tiếp của việc chưa dùng
+cấu trúc tăng tốc không gian, và là động lực cho hướng tối ưu bằng BVH nêu ở
+Chương~\ref{ch:ket-luan}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/best_render.png}
+  \caption{Ảnh kết xuất trên cảnh mật độ cao sau 1846 khung hình tích lũy.}
+  \label{fig:best-render}
+\end{figure}
+
+\section{Tái tạo các loại vật liệu}
+Hình~\ref{fig:three-materials} kiểm chứng riêng ba loại vật liệu đã hiện thực
+trên một cảnh thưa để quan sát rõ từng đặc tính. Khối cầu màu đỏ thể hiện vật
+liệu Lambertian với bề mặt khuếch tán đều, không phản chiếu môi trường. Khối cầu
+trong suốt thể hiện vật liệu điện môi với hiện tượng khúc xạ làm đảo ngược ảnh
+nền nhìn qua thân cầu, đồng thời có phản xạ một phần ở rìa theo xấp xỉ Schlick.
+Khối cầu màu vàng kim thể hiện vật liệu kim loại với phản xạ gương rõ nét, ánh
+lên hình ảnh các vật thể xung quanh. Tại cấu hình khẩu độ bằng 0, toàn ảnh sắc
+nét và hệ thống đạt khoảng 57\,ms mỗi khung tương ứng 17{,}5 khung hình trên
+giây nhờ số lượng vật thể ít.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/three_materials.png}
+  \caption{Ba loại vật liệu Lambertian, điện môi và kim loại trên cùng một cảnh.}
+  \label{fig:three-materials}
+\end{figure}
+
+\section{Độ sâu trường ảnh}
+Mô hình camera mô phỏng thấu kính mỏng được kiểm chứng bằng cách thay đổi khẩu độ
+và khoảng lấy nét. Hình~\ref{fig:dof} minh họa hai mức khẩu độ khác nhau. Vật thể
+nằm đúng mặt phẳng lấy nét giữ được độ sắc nét, trong khi các vật thể ở trước và
+sau mặt phẳng đó bị nhòe dần theo khoảng cách. Mức độ nhòe tỉ lệ với bán kính
+khẩu độ: khẩu độ càng lớn thì vùng rõ nét càng hẹp và hậu cảnh càng mờ. Hiệu ứng
+này phát sinh tự nhiên từ việc lấy mẫu điểm xuất phát của tia trên đĩa thấu kính,
+không cần xử lý hậu kỳ.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.49\textwidth}
+    \includegraphics[width=\textwidth]{images/dof_01.png}
+    \caption{Khẩu độ 0{,}061, khoảng lấy nét 0{,}9.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+    \includegraphics[width=\textwidth]{images/dof_02.png}
+    \caption{Khẩu độ 0{,}021, khoảng lấy nét 2{,}1.}
+  \end{subfigure}
+  \caption{Hiệu ứng độ sâu trường ảnh ở hai cấu hình khẩu độ và khoảng lấy nét.}
+  \label{fig:dof}
+\end{figure}
+
+\section{Nhòe chuyển động}
+Hình~\ref{fig:motion-blur} kiểm chứng hiệu ứng nhòe chuyển động trên cảnh có một
+số khối cầu di chuyển. Các khối cầu tĩnh hiển thị sắc nét, còn các khối cầu được
+gán vận tốc để lại vệt mờ kéo dài theo phương chuyển động. Hiệu ứng đạt được nhờ
+mỗi tia mang một mốc thời gian ngẫu nhiên trong khoảng phơi sáng, và vị trí khối
+cầu chuyển động được nội suy theo mốc thời gian đó. Khi cộng dồn nhiều khung hình
+với các mốc thời gian khác nhau, vị trí của vật thể trải đều trong khoảng phơi
+sáng tạo thành vệt nhòe liên tục.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/motion_blur.png}
+  \caption{Nhòe chuyển động trên các khối cầu được gán vận tốc.}
+  \label{fig:motion-blur}
+\end{figure}
+
+\section{Nhận xét chung}
+Qua các thử nghiệm trên, hệ thống tái tạo đầy đủ những hiệu ứng quang học mục
+tiêu gồm phản xạ, khúc xạ, đổ bóng mềm, độ sâu trường ảnh và nhòe chuyển động,
+với chất lượng hình ảnh hội tụ tốt sau vài trăm đến vài nghìn khung hình tích
+lũy. Về hiệu năng, hệ thống duy trì tốc độ tương tác từ 10 đến 18 khung hình
+trên giây với cảnh thưa, nhưng giảm rõ rệt khi mật độ vật thể tăng cao do chi phí
+tìm giao điểm theo phương pháp duyệt tuyến tính. Kết quả này xác nhận tính đúng
+đắn của hệ thống đồng thời chỉ ra nút thắt hiệu năng cần được giải quyết bằng cấu
+trúc tăng tốc không gian, sẽ được bàn ở Chương~\ref{ch:ket-luan}.
