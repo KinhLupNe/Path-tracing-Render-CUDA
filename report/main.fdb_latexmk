@@ -1,18 +1,18 @@
 # Fdb version 4
-["bibtex main"] 1782769267.96405 "main.aux" "main.bbl" "main" 1782769280.25507 0
-  "./references.bib" 1782238604.59223 1704 27bfca6c89f260bf03931a7454960a3a ""
-  "C:/Program Files/MiKTeX/bibtex/bst/bibtex/plain.bst" 1291864736 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "main.aux" 1782769271.45738 16338 dcb237d1eca8b7e59218daea6a65ab29 "xelatex"
+["bibtex main"] 1783037651.63501 "main.aux" "main.bbl" "main" 1783037666.48959 0
+  "./references.bib" 1782990045.79927 4220 4e20650fbd04da70f611a9c38e75011f ""
+  "C:/Program Files/MiKTeX/bibtex/bst/bibtex/unsrt.bst" 1291864736 18030 1376b4b231b50c66211e47e42eda2875 ""
+  "main.aux" 1783037656.14273 15098 5bd9d99c0040f5e9013bcff5fd44f99b "xelatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["xdvipdfmx"] 1782769272.49262 "main.xdv" "main.pdf" "main" 1782769280.28803 0
-  "main.xdv" 1782769271.4769 565984 1c8ec1df75ca27120607fe8075e22b23 "xelatex"
+["xdvipdfmx"] 1783037657.54689 "main.xdv" "main.pdf" "main" 1783037666.52869 0
+  "main.xdv" 1783037656.16981 540020 158c36f7a889566a8b0607de8b0fc415 "xelatex"
   (generated)
   "main.pdf"
   (rewritten before read)
-["xelatex"] 1782769268.27197 "main.tex" "main.xdv" "main" 1782769280.25586 0
+["xelatex"] 1783037652.06103 "main.tex" "main.xdv" "main" 1783037666.49053 0
   "C:/Program Files/MiKTeX/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136747054 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -201,7 +201,6 @@
   "C:/Program Files/MiKTeX/tex/latex/l3packages/xparse/xparse.sty" 1761203377 10176 c2fc1c663b3f3899ddac6e6ed3fb1d7e ""
   "C:/Program Files/MiKTeX/tex/latex/listings/listings.cfg" 1763898348 1865 73df61e45e2dfdc239ef37ab16d87d6a ""
   "C:/Program Files/MiKTeX/tex/latex/listings/listings.sty" 1763898348 81627 6a9c17f89f356724d1c9813b7025f0c1 ""
-  "C:/Program Files/MiKTeX/tex/latex/listings/lstlang1.sty" 1763898348 206518 095934a0019dcba14af528744bf9b295 ""
   "C:/Program Files/MiKTeX/tex/latex/listings/lstmisc.sty" 1763898348 77105 002e983b638eadbf04e580642335f689 ""
   "C:/Program Files/MiKTeX/tex/latex/listings/lstpatch.sty" 1763898348 353 9024412f43e92cd5b21fe9ded82d0610 ""
   "C:/Program Files/MiKTeX/tex/latex/pgf/basiclayer/pgf.sty" 1756451144 1090 bae35ef70b3168089ef166db3e66f5b2 ""
@@ -224,27 +223,25 @@
   "C:/Program Files/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Program Files/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
   "C:/Users/KinhLup/AppData/Local/MiKTeX/miktex/data/le/xetex/xelatex.fmt" 1779614709.10659 27167978 c16cc9f65f89428b8d0039fbe98d1c23 ""
-  "chapters/chapter1.tex" 1782769232.52459 2247 a7b2b3b049d5811c111dab78cec8de8d ""
-  "chapters/chapter2.tex" 1782241736.49241 32344 46b173bca4a155e693bc7aa7e7320753 ""
-  "chapters/chapter3.tex" 1782236972.0983 11234 bcea081776cd7961a7df5ace3854f4f7 ""
-  "chapters/chapter4.tex" 1782768891.90832 7594 d9dda3700d73dc4fca119ccf64f2cdc4 ""
-  "chapters/chapter5.tex" 1782236972.24983 931 b9072a7c8157ecd2bf504ff56fa2b6c1 ""
-  "frontmatter/abstract_en.tex" 1782240038.78033 2029 138ae90f24d34768370f5436fa54233f ""
-  "frontmatter/abstract_vi.tex" 1782240024.17846 2384 e9bb45c9ed077b72cdfba79dcfc1ff8d ""
-  "frontmatter/acknowledgement.tex" 1782239988.6195 1640 1639ec4348bcba2742172801a6f23602 ""
-  "frontmatter/commitment.tex" 1782240000.74876 1407 2d538694027ee67b4be2470006d58625 ""
+  "chapters/chapter1.tex" 1782990502.37534 4602 8c4488a4c514a82f1e5d497b25be2983 ""
+  "chapters/chapter2.tex" 1782990947.05636 28689 3394cf9fb147040bec84879781eb7809 ""
+  "chapters/chapter3.tex" 1783034856.80359 13151 8fc2ca53bf562dd8f652aeb020f4e1da ""
+  "chapters/chapter4.tex" 1783035829.27471 11241 9d6f7d3b81c5888c77e16537578a4a57 ""
+  "chapters/chapter5.tex" 1782991067.83126 3253 ba9added0d3ce57a8b44b219cac64ae5 ""
+  "frontmatter/abstract_vi.tex" 1783035810.05851 2385 7f325403488b344a6d3064840f159462 ""
   "images/best_render.png" 1782768827.21733 1248203 8c092095c8e1b89926b58340080eaef9 ""
   "images/dof_01.png" 1782768827.26189 630507 3096cb39c70c71cdb4ec93e9ea19eb02 ""
   "images/dof_02.png" 1782768827.28465 2194122 5bbf9c6d7075e93f972c1a7e0a2310bb ""
   "images/motion_blur.png" 1782768827.23985 1122087 8919f30c8d9d4f84b184b935ca795738 ""
   "images/three_materials.png" 1782768827.30869 1860130 692db194befd12840d89bdef1c57d138 ""
-  "main.aux" 1782769271.45738 16338 dcb237d1eca8b7e59218daea6a65ab29 "xelatex"
-  "main.bbl" 1782769268.21074 1348 e4683b0df5a8c13f4f3d8e27e190a3fd "bibtex main"
-  "main.lof" 1782769271.4769 2256 ddd0a6b4361bc92faeea0a3095c2b080 "xelatex"
-  "main.out" 1782769271.46789 11969 78212fe462f6ba9efd2b0851f07d9465 "xelatex"
-  "main.tex" 1782243059.90997 3405 0b54a28239e7489651548bb377905105 ""
-  "main.toc" 1782769271.4769 5485 eb25782a282ca4dd96831aad768f5d0d "xelatex"
-  "titlepage.tex" 1782236971.84098 1198 19afd4c9b676da9b336a28d0fb7e5d0d ""
+  "images/vignette.png" 1782989000.10973 287079 f6e57c36afa1be5ac22a89fc9ab2daed ""
+  "main.aux" 1783037656.14273 15098 5bd9d99c0040f5e9013bcff5fd44f99b "xelatex"
+  "main.bbl" 1783037651.96338 3162 d3ed0a668e31baecdab8c0bb8ca451d7 "bibtex main"
+  "main.lof" 1783037656.16981 2448 4fb0ddde8d1c1662eb1af0885d5e343a "xelatex"
+  "main.out" 1783037656.15625 10873 fafcb903f55b5abb008461f4a8b80943 "xelatex"
+  "main.tex" 1782990024.1828 3255 fbed35ab06744bd5374e7a24c5009572 ""
+  "main.toc" 1783037656.16981 5038 01802e91e4bb59399a054befa5624329 "xelatex"
+  "titlepage.tex" 1783035793.66797 1148 a63a4136ba0f751cd21bdbef66205cd4 ""
   (generated)
   "main.aux"
   "main.lof"

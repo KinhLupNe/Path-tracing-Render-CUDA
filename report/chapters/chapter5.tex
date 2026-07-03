@@ -4,17 +4,48 @@
 \label{ch:ket-luan}
 
 \section{Kết luận}
-% TODO: Tóm tắt những kết quả đã đạt được so với mục tiêu đề ra ở Chương 1.
-
-\section{Hạn chế}
-% TODO: Nêu các hạn chế hiện tại của hệ thống.
-
-\section{Hướng phát triển trong tương lai}
-Một số hướng phát triển tiềm năng:
+Đề tài đã nghiên cứu và xây dựng thành công một bộ kết xuất Path Tracing chạy
+song song trên kiến trúc CUDA của NVIDIA, đạt được các mục tiêu đề ra ở
+Chương~\ref{ch:gioi-thieu}. Cụ thể, hệ thống đã:
 \begin{itemize}[noitemsep]
-  \item Tích hợp lấy mẫu theo tầm quan trọng (Importance Sampling) và ước lượng
-        sự kiện kế tiếp (Next Event Estimation) để giảm nhiễu nhanh hơn.
-  \item Hỗ trợ thêm các mô hình BRDF/BSDF phức tạp.
-  \item Tối ưu hóa bộ nhớ và khử nhiễu (denoising) bằng học sâu.
-  \item Mở rộng hỗ trợ nhiều định dạng cảnh và nguồn sáng.
+  \item Hiện thực trọn vẹn thuật toán Path Tracing trên GPU bằng CUDA, với vòng
+        dò đường theo kiểu lặp và cơ chế tích lũy mẫu theo thời gian để khử
+        nhiễu Monte Carlo.
+  \item Xây dựng hệ thống vật liệu Lambertian, kim loại và điện môi cùng mô hình
+        camera vật lý hỗ trợ độ sâu trường ảnh và nhòe chuyển động.
+  \item Hiển thị thời gian thực nhờ cầu nối CUDA--OpenGL, tránh chi phí sao chép
+        dữ liệu ảnh qua lại giữa CPU và GPU.
+  \item Nạp cảnh theo định dạng Mitsuba~3 và cung cấp giao diện điều khiển tương
+        tác để tinh chỉnh camera cũng như theo dõi hiệu năng.
 \end{itemize}
+
+Kết quả thực nghiệm ở Chương~\ref{ch:danh-gia} xác nhận hệ thống tái tạo đầy đủ
+các hiệu ứng quang học mục tiêu và duy trì tốc độ tương tác trên phần cứng phổ
+thông. Đồng thời, thực nghiệm cũng chỉ ra nút thắt hiệu năng khi mật độ vật thể
+tăng cao, do việc tìm giao điểm còn thực hiện bằng duyệt tuyến tính, mở ra các
+hướng phát triển tiếp theo.
+
+\section{Hướng phát triển}
+Trên nền tảng hiện có, hệ thống có thể được mở rộng theo các hướng sau:
+\begin{enumerate}[noitemsep]
+  \item \textbf{Bounding Volume Hierarchy (BVH):} xây dựng cấu trúc tăng tốc
+        không gian để giảm chi phí tìm giao điểm từ tuyến tính xuống mức
+        logarit, khắc phục nút thắt hiệu năng ở cảnh mật độ cao.
+  \item \textbf{1D/2D:} bổ sung các loại hình học và nguyên thủy một, hai chiều
+        (đoạn thẳng, mặt phẳng, tam giác) bên cạnh khối cầu hiện tại.
+  \item \textbf{Texture Mapping:} hỗ trợ ánh xạ vân bề mặt để tăng độ chi tiết
+        và chân thực cho vật liệu.
+  \item \textbf{Emission Material:} thêm vật liệu phát sáng để mô phỏng nguồn
+        sáng vùng trực tiếp trong cảnh.
+  \item \textbf{Volume Rendering:} kết xuất môi trường tham gia (khói, sương,
+        chất bán trong suốt) bằng mô hình tán xạ thể tích.
+  \item \textbf{Monte Carlo:} nâng cao chất lượng ước lượng Monte Carlo bằng lấy
+        mẫu theo tầm quan trọng (Importance Sampling) và ước lượng sự kiện kế
+        tiếp để giảm nhiễu nhanh hơn.
+\end{enumerate}
+
+\section{Mã nguồn}
+Toàn bộ mã nguồn của đề tài được công khai tại kho lưu trữ:
+\begin{center}
+\url{https://github.com/KinhLupNe/Path-tracing-Render-CUDA}
+\end{center}

@@ -4,9 +4,13 @@
 \label{ch:trien-khai}
 
 Chương này mô tả cách hiện thực các khái niệm ở Chương~\ref{ch:ly-thuyet} thành
-một hệ thống chạy được: kiến trúc tổng thể, cầu nối giữa CUDA và OpenGL để hiển
-thị thời gian thực, nhân (kernel) Path Tracing, hệ thống vật liệu và camera,
-quản lý cảnh trên GPU, bộ nạp cảnh Mitsuba 3 và giao diện điều khiển tương tác.
+một hệ thống chạy được. Nội dung lần lượt trình bày kiến trúc tổng thể và công
+nghệ sử dụng; cầu nối giữa CUDA và OpenGL cùng vòng lặp kết xuất thời gian thực;
+nhân Path Tracing và cấu hình thực thi trên GPU; hệ thống vật liệu và mô hình
+camera; cách quản lý cảnh và dựng thế giới trên GPU; bộ nạp cảnh theo định dạng
+Mitsuba~3; cơ chế tích lũy theo thời gian kèm hiệu chỉnh gamma; và cuối cùng là
+giao diện điều khiển tương tác. Phần trình bày tập trung mô tả cách tổ chức, cấu
+trúc dữ liệu và luồng xử lý ở mức tổng quan, thay vì đi sâu vào mã nguồn chi tiết.
 
 \section{Tổng quan kiến trúc hệ thống}
 Hệ thống được chia thành ba tầng phối hợp với nhau trong mỗi khung hình:
@@ -18,7 +22,7 @@ Hệ thống được chia thành ba tầng phối hợp với nhau trong mỗi 
   \item \textbf{Tầng hiển thị (OpenGL + ImGui):} đưa ảnh từ VRAM lên màn hình và
         vẽ bảng điều khiển tương tác.
 \end{itemize}
-Điểm mấu chốt về hiệu năng là dữ liệu ảnh \emph{không} phải đi vòng qua CPU:
+Điểm mấu chốt về hiệu năng là dữ liệu ảnh không phải đi vòng qua CPU:
 CUDA ghi thẳng vào bộ đệm mà OpenGL dùng để hiển thị, nhờ cơ chế CUDA--OpenGL
 Interop trình bày ở Mục~\ref{sec:interop}.
 
@@ -37,7 +41,7 @@ Hệ thống được xây dựng bằng C++ và CUDA, cấu hình biên dịch 
 \section{Cầu nối CUDA--OpenGL và vòng lặp kết xuất}
 \label{sec:interop}
 Để hiển thị thời gian thực mà không tốn chi phí sao chép qua lại giữa CPU và
-GPU, hệ thống dùng cơ chế \emph{interop}. Một \emph{Pixel Buffer Object} (PBO)
+GPU, hệ thống dùng cơ chế interop. Một Pixel Buffer Object (PBO)
 được tạo bởi OpenGL nằm trên VRAM, sau đó đăng ký với CUDA bằng
 \texttt{cudaGraphicsGLRegisterBuffer}. Từ đó, CUDA có thể ghi thẳng kết quả vào
 PBO, còn OpenGL dán PBO lên một texture để hiển thị.
@@ -54,126 +58,110 @@ Trong mỗi vòng lặp khung hình, hệ thống thực hiện bốn bước:
 \end{enumerate}
 
 \section{Hiện thực nhân Path Tracing trên CUDA}
-Nhân chính \texttt{render\_anim\_kernel} ánh xạ mỗi luồng GPU tới một điểm ảnh
-qua chỉ số toàn cục. Mỗi luồng nạp trạng thái ngẫu nhiên riêng, sinh dịch chuyển
-khử răng cưa, dựng tia từ camera rồi gọi hàm \texttt{ray\_color} để dò đường:
-\begin{lstlisting}[language=C++, caption={Ánh xạ luồng--điểm ảnh và dựng tia (rút gọn).}]
-int i = threadIdx.x + blockIdx.x * blockDim.x;
-int j = threadIdx.y + blockIdx.y * blockDim.y;
-if (i >= width || j >= height) return;
-int pixel_index = j * width + i;
+Nhân kết xuất chính ánh xạ mỗi luồng GPU tới đúng một điểm ảnh thông qua chỉ số
+toàn cục tính từ chỉ số khối và chỉ số luồng. Mỗi luồng nạp trạng thái sinh số
+ngẫu nhiên riêng của điểm ảnh mình phụ trách, làm nhiễu nhẹ vị trí bắn tia trong
+ô điểm ảnh để khử răng cưa, dựng tia tương ứng từ camera rồi gọi hàm dò đường để
+tính màu.
 
-curandState local_rand_state = d_rand_state[pixel_index];
-float s = float(i + curand_uniform(&local_rand_state)) / width;
-float t = 1.0f - float(j + curand_uniform(&local_rand_state)) / height;
+Hàm dò đường được hiện thực theo kiểu lặp thay cho đệ quy, vì đệ quy sâu tốn ngăn
+xếp và không phù hợp với GPU. Thay vì gọi lại chính nó sau mỗi va chạm, hàm duy
+trì một hệ số suy giảm $\beta$ và nhân dồn nó với hệ số phản xạ của vật liệu tại
+mỗi lần dội, đúng theo công thức throughput ở Chương~\ref{ch:ly-thuyet}. Vòng lặp
+kết thúc trong ba trường hợp: tia thoát ra ngoài cảnh và nhận màu bầu trời (nhân
+với $\beta$ để trả về đóng góp của đường), vật liệu hấp thụ hoàn toàn không tán
+xạ tiếp, hoặc số lần dội chạm ngưỡng tối đa (50) để bảo đảm luôn dừng. Khi tìm
+giao, cận dưới tham số tia được đặt là một giá trị dương nhỏ ($t_{\min}=0{,}001$)
+nhằm tránh hiện tượng shadow acne -- tia thứ cấp tự giao lại chính bề mặt vừa
+xuất phát do sai số dấu phẩy động.
 
-Ray ray = (*d_camera)->get_ray(s, t, &local_rand_state);
-Color pixel_color = ray_color(ray, d_world, &local_rand_state);
-\end{lstlisting}
-
-Hàm \texttt{ray\_color} hiện thực dò đường theo kiểu lặp (thay cho đệ quy, vốn
-tốn ngăn xếp trên GPU). Hệ số suy giảm \texttt{cur\_attenuation} ($\beta$) được
-nhân dồn sau mỗi va chạm; vòng lặp dừng khi tia thoát ra nền trời, khi vật liệu
-không tán xạ, hoặc khi đạt số lần dội tối đa (50):
-\begin{lstlisting}[language=C++, caption={Vòng dò đường lặp với throughput.}]
-Color cur_attenuation(1, 1, 1);
-for (int i = 0; i < 50; i++) {
-  hit_record rec;
-  if ((*world)->hit(cur_ray, 0.001f, 10000.0f, rec)) {
-    Ray scattered; Vec3 attenuation;
-    if (scatter(cur_ray, rec, attenuation, scattered, rand)) {
-      cur_attenuation = cur_attenuation * attenuation;  // beta_n = beta_{n-1} * f_r
-      cur_ray = scattered;
-    } else return Color(0, 0, 0);
-  } else {                       // tia thoat ra bau troi
-    float a = 0.5f * (unit_vector(cur_ray.direction()).y() + 1.0f);
-    Color sky = (1 - a) * Color(1, 1, 1) + a * Color(0.5f, 0.7f, 1.0f);
-    return sky * cur_attenuation;
-  }
-}
-return Color(0, 0, 0);
-\end{lstlisting}
-Giá trị cận dưới $t_{\min}=0{,}001$ giúp tránh hiện tượng \emph{shadow acne}
-(tia tự va lại bề mặt vừa xuất phát do sai số dấu phẩy động).
+Về cấu hình thực thi, nhân được khởi chạy trên một lưới hai chiều phủ toàn bộ
+khung hình, mỗi khối gồm $8\times8=64$ luồng tương ứng một mảng điểm ảnh liền kề.
+Cách chia khối này cân bằng giữa mức độ chiếm dụng của đa xử lý luồng và tính cục
+bộ khi truy cập bộ nhớ. Vì mỗi điểm ảnh cần một dãy số ngẫu nhiên độc lập cho quá
+trình lấy mẫu Monte Carlo, hệ thống dùng thư viện \texttt{cuRAND} và gieo hạt
+giống riêng cho từng điểm ảnh trong một nhân khởi tạo chạy một lần trước vòng lặp;
+trạng thái này được lưu lại và tái sử dụng qua các khung. Một đặc thù cần lưu ý
+khi tối ưu là sự phân kỳ luồng: các tia trong cùng một nhóm luồng có thể chạm vật
+liệu khác loại hoặc dừng dò đường ở số lần dội khác nhau, khiến GPU phải thực thi
+tuần tự các nhánh và làm giảm hiệu suất so với trường hợp lý tưởng.
 
 \section{Hệ thống vật liệu}
 Vật liệu được biểu diễn bằng một \texttt{struct Material} gọn nhẹ gồm kiểu vật
 liệu, albedo, hệ số nhám \texttt{fuzz} và chiết suất \texttt{ir}. Cách dùng
 \texttt{struct} phẳng (thay vì lớp ảo) giúp truyền dữ liệu xuống GPU thuận lợi.
-Hàm \texttt{scatter} phân nhánh theo kiểu vật liệu để xác định tia tán xạ:
+Một hàm tán xạ chung phân nhánh theo kiểu vật liệu để xác định tia tán xạ:
 \begin{itemize}[noitemsep]
-  \item \textbf{Lambertian:} hướng tán xạ là pháp tuyến cộng vector đơn vị ngẫu
-        nhiên; nếu hướng suy biến thì loại bỏ.
-  \item \textbf{Metal:} phản xạ gương quanh pháp tuyến, cộng nhiễu bán kính
-        \texttt{fuzz}; chỉ giữ tia phản xạ ra ngoài bề mặt.
-  \item \textbf{Dielectric:} xét điều kiện phản xạ toàn phần và xác suất Schlick
-        \eqref{eq:schlick} để chọn giữa phản xạ và khúc xạ (định luật Snell).
+  \item \textbf{Lambertian:} hướng tán xạ là pháp tuyến cộng một vector đơn vị
+        ngẫu nhiên; nếu hướng thu được suy biến (gần bằng 0) thì thay bằng pháp
+        tuyến.
+  \item \textbf{Metal:} phản xạ gương quanh pháp tuyến, cộng thêm nhiễu trong quả
+        cầu bán kính \texttt{fuzz} để mô phỏng bề mặt nhám; chỉ giữ lại tia còn
+        hướng ra ngoài bề mặt.
+  \item \textbf{Dielectric:} tính góc tới, xét điều kiện phản xạ toàn phần và so
+        sánh xác suất Schlick~\eqref{eq:schlick} với một số ngẫu nhiên để chọn
+        giữa phản xạ và khúc xạ theo định luật Snell; nhờ vậy mỗi tia chỉ đi theo
+        một nhánh mà qua nhiều mẫu vẫn tái tạo đúng tỉ lệ Fresnel.
 \end{itemize}
-\begin{lstlisting}[language=C++, caption={Quyết định phản xạ/khúc xạ cho điện môi (rút gọn).}]
-float ratio = front_face ? (1.0f / mat.ir) : mat.ir;
-float cos_theta = fabs(dot(normal, unit_vector(r_in.direction())));
-bool cannot_refract = ratio * sqrtf(1 - cos_theta*cos_theta) > 1.0f;
-if (cannot_refract || schlick(cos_theta, mat.ir) > random_float(rand))
-  scatter_direction = reflect(r_in.direction(), out_normal);
-else
-  scatter_direction = refract(unit_vector(r_in.direction()), ratio, out_normal);
-\end{lstlisting}
 
 \section{Mô hình camera}
-Lớp \texttt{Camera} tiền tính các vector khung nhìn từ vị trí đặt máy, điểm
-nhìn, trường nhìn, tỉ lệ khung hình, khẩu độ và khoảng lấy nét. Hàm
-\texttt{get\_ray} sinh tia cho tọa độ ảnh $(s,t)$: điểm xuất phát được dịch
-ngẫu nhiên trên đĩa thấu kính (tạo độ sâu trường ảnh), và mốc thời gian của tia
-được lấy ngẫu nhiên trong $[t_0, t_1]$ phục vụ nhòe chuyển động.
-\begin{lstlisting}[language=C++, caption={Sinh tia với độ sâu trường ảnh và mốc thời gian.}]
-Vec3 rd = lens_radius * random_in_unit_disk(rand);
-Vec3 offset = u * rd.x() + v * rd.y();
-float time = time0 + random_float(rand) * (time1 - time0);
-return Ray(origin + offset,
-           lower_left_corner + s*horizontal + t*vertical - origin - offset,
-           time);
-\end{lstlisting}
+Lớp camera tiền tính các vector khung nhìn từ vị trí đặt máy, điểm nhìn, trường
+nhìn, tỉ lệ khung hình, khẩu độ và khoảng lấy nét. Với mỗi tọa độ ảnh, hàm sinh
+tia lấy ngẫu nhiên một điểm trên đĩa thấu kính làm gốc tia (tạo độ sâu trường
+ảnh) và hướng tia đi qua điểm lấy nét tương ứng, đồng thời gán cho tia một mốc
+thời gian ngẫu nhiên trong khoảng phơi sáng $[t_0, t_1]$ để phục vụ nhòe chuyển
+động. Cách sinh tia này hiện thực trực tiếp mô hình thấu kính mỏng và tích phân
+theo thời gian đã trình bày ở Chương~\ref{ch:ly-thuyet}.
 
 \section{Quản lý cảnh và xây dựng thế giới trên GPU}
-Cảnh trên host được mô tả bằng danh sách \texttt{SphereData} (tâm, bán kính, vật
-liệu, thông tin chuyển động). Dữ liệu này được sao chép xuống GPU, sau đó nhân
-\texttt{create\_world\_kernel} khởi tạo các đối tượng \texttt{Sphere} hoặc
-\texttt{MovingSphere} bằng \texttt{new} \emph{ngay trên thiết bị} và gom vào một
-\texttt{HittableList}. Cách này cho phép sử dụng đa hình (hàm ảo \texttt{hit})
-trực tiếp trong nhân GPU.
+Trên phía host, mỗi cảnh được mô tả bằng một danh sách cấu trúc dữ liệu gọn nhẹ,
+mỗi phần tử ghi tâm, bán kính, vật liệu và thông tin chuyển động của một khối cầu.
+Danh sách này được sao chép xuống bộ nhớ thiết bị, sau đó một nhân khởi tạo chạy
+một lần sẽ dựng các đối tượng khối cầu (tĩnh hoặc chuyển động) ngay trên
+GPU và gom chúng vào một danh sách vật thể chung. Việc cấp phát và dựng đối tượng
+trực tiếp trên thiết bị cho phép sử dụng cơ chế đa hình (hàm ảo tìm giao) ngay
+trong nhân kết xuất mà không phải sao chép con trỏ qua lại giữa hai không gian bộ
+nhớ.
 
-Việc tìm giao hiện được \texttt{HittableList} thực hiện bằng duyệt tuyến tính,
-luôn giữ lại giao điểm gần nhất bằng cách thu hẹp dần $t_{\max}$. Mỗi
-\texttt{Sphere} giải phương trình bậc hai như ở Chương~\ref{ch:ly-thuyet} và
-điền bản ghi va chạm (vị trí, pháp tuyến, vật liệu). Đây là điểm còn có thể tối
-ưu bằng BVH (xem Chương~\ref{ch:ket-luan}).
+Khi dò tia, danh sách vật thể được duyệt tuyến tính: với mỗi tia, hệ thống lần
+lượt kiểm tra giao với từng khối cầu và luôn giữ lại giao điểm gần nhất bằng cách
+thu hẹp dần cận trên của tham số tia. Mỗi khối cầu được kiểm tra giao bằng cách
+giải phương trình bậc hai giữa tia và mặt cầu như đã nêu ở
+Chương~\ref{ch:ly-thuyet}, rồi điền vào bản ghi va chạm vị trí, pháp tuyến và vật
+liệu tại điểm giao. Cách duyệt tuyến tính có độ phức tạp tỉ lệ với số vật thể nên
+trở thành nút thắt hiệu năng khi cảnh đông đối tượng; đây chính là động lực cho
+việc tích hợp cấu trúc tăng tốc không gian (BVH) nêu ở Chương~\ref{ch:ket-luan}.
 
-\section{Nạp cảnh từ Mitsuba 3}
-Để tái sử dụng các cảnh chuẩn, hệ thống hiện thực \texttt{MitsubaLoader} phân
-tích tệp \texttt{scene.xml} theo định dạng Mitsuba~3~\cite{mitsuba2022} bằng
-\texttt{tinyxml2}. Bộ nạp duyệt các thẻ con của \texttt{<scene>} và xử lý:
-\begin{itemize}[noitemsep]
-  \item \texttt{<sensor>}: đọc trường nhìn (\texttt{fov}) để dựng camera.
-  \item \texttt{<bsdf>}: ánh xạ vật liệu Mitsuba sang hệ thống nội bộ
-        (\texttt{diffuse}$\to$Lambertian, \texttt{dielectric}$\to$Dielectric,
-        \texttt{conductor}$\to$Metal), lưu theo \texttt{id}.
-  \item \texttt{<shape>}: với khối cầu, đọc bán kính và lấy tâm từ cột tịnh tiến
-        của ma trận biến đổi $4\times4$, rồi tham chiếu vật liệu theo \texttt{id}.
-\end{itemize}
-Phiên bản hiện tại tập trung hỗ trợ khối cầu; các loại hình khác được bỏ qua kèm
-cảnh báo, và là hướng mở rộng tự nhiên trong tương lai.
+\section{Nạp cảnh từ định dạng Mitsuba 3}
+Để tái sử dụng các cảnh chuẩn và tách dữ liệu cảnh khỏi mã nguồn, hệ thống hiện
+thực một bộ nạp phân tích tệp mô tả cảnh theo định dạng Mitsuba~3 bằng thư viện
+\texttt{tinyxml2}. Bộ nạp duyệt các thẻ con của cảnh và ánh xạ chúng sang mô hình
+nội bộ: thẻ cảm biến cung cấp trường nhìn để dựng camera; thẻ vật liệu được ánh
+xạ theo loại (khuếch tán sang Lambertian, điện môi sang Dielectric, dẫn điện sang
+Metal) và lưu lại theo định danh để tham chiếu; thẻ hình học với khối cầu cho biết
+bán kính, còn tâm được lấy từ cột tịnh tiến của ma trận biến đổi $4\times4$, và
+vật liệu được liên kết qua định danh đã lưu. Phiên bản hiện tại tập trung hỗ trợ
+khối cầu; các loại hình học khác được bỏ qua kèm cảnh báo và là hướng mở rộng tự
+nhiên trong tương lai.
 
 \section{Tích lũy theo thời gian và hiệu chỉnh gamma}
-Sau khi có màu của khung hiện tại, nhân cộng dồn vào bộ đệm tích lũy rồi chia
-cho số khung để giảm nhiễu (xem Chương~\ref{ch:ly-thuyet}). Khi camera hoặc tham
-số thay đổi, host đặt lại \texttt{frame\_count} về 1 để loại bỏ ảnh cũ. Trước khi
-ghi ra PBO, màu được hiệu chỉnh gamma bằng căn bậc hai và quy về số nguyên 8-bit
-cho mỗi kênh RGBA.
+Do mỗi khung chỉ lấy một mẫu cho mỗi điểm ảnh, ảnh của một khung đơn lẻ rất nhiễu.
+Hệ thống duy trì một bộ đệm tích lũy lưu tổng màu qua các khung; màu hiển thị là
+trung bình cộng của tổng này chia cho số khung đã tích lũy, đúng theo bộ ước lượng
+Monte Carlo nên ảnh hội tụ dần và bớt nhiễu theo thời gian khi camera đứng yên.
+Mỗi khi camera hoặc một tham số kết xuất thay đổi, host đặt lại bộ đếm khung về 1
+để loại bỏ những mẫu cũ không còn hợp lệ với góc nhìn mới. Trước khi ghi ra bộ đệm
+hiển thị, giá trị màu tuyến tính được hiệu chỉnh gamma (lấy căn bậc hai từng kênh)
+rồi quy về số nguyên 8-bit cho mỗi kênh RGBA, đúng như lý do đã phân tích ở
+Chương~\ref{ch:ly-thuyet}.
 
 \section{Giao diện điều khiển tương tác}
-\texttt{UIManager} (ImGui) hiển thị bảng điều khiển cho phép tinh chỉnh các tham
-số camera (trường nhìn, khẩu độ, khoảng lấy nét) và theo dõi hiệu năng (FPS,
-thời gian mỗi khung). \texttt{CameraController} xử lý thao tác chuột để quay
-quanh (orbit), tịnh tiến (pan) và phóng to/thu nhỏ (zoom). Bất kỳ thay đổi nào
-từ giao diện hay camera đều kích hoạt đồng bộ camera xuống GPU và đặt lại quá
-trình tích lũy, bảo đảm ảnh luôn nhất quán với góc nhìn hiện tại.
+Hệ thống cung cấp một bảng điều khiển dựng bằng thư viện ImGui, cho phép người
+dùng theo dõi và tinh chỉnh quá trình kết xuất theo thời gian thực. Bảng điều
+khiển hiển thị các chỉ số hiệu năng (số khung tích lũy, thời gian mỗi khung và số
+khung hình trên giây) và cho phép chỉnh trực tiếp các tham số camera như trường
+nhìn, khẩu độ, khoảng lấy nét cùng hệ số làm tối rìa ảnh. Song song, một bộ điều
+khiển camera xử lý thao tác chuột để xoay quanh tâm cảnh, tịnh tiến và phóng
+to/thu nhỏ. Bất kỳ thay đổi nào từ giao diện hay từ thao tác camera đều kích hoạt
+đồng bộ tham số camera xuống GPU và đặt lại quá trình tích lũy, bảo đảm ảnh luôn
+nhất quán với góc nhìn và cấu hình hiện tại.

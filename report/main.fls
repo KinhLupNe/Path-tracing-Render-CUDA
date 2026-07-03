@@ -377,26 +377,11 @@ INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr6.tfm
 OUTPUT main.xdv
-INPUT .\frontmatter\acknowledgement.tex
-INPUT .\frontmatter\acknowledgement.tex
-INPUT .\frontmatter\acknowledgement.tex
-INPUT .\frontmatter\acknowledgement.tex
-INPUT frontmatter\acknowledgement.tex
-INPUT .\frontmatter\commitment.tex
-INPUT .\frontmatter\commitment.tex
-INPUT .\frontmatter\commitment.tex
-INPUT .\frontmatter\commitment.tex
-INPUT frontmatter\commitment.tex
 INPUT .\frontmatter\abstract_vi.tex
 INPUT .\frontmatter\abstract_vi.tex
 INPUT .\frontmatter\abstract_vi.tex
 INPUT .\frontmatter\abstract_vi.tex
 INPUT frontmatter\abstract_vi.tex
-INPUT .\frontmatter\abstract_en.tex
-INPUT .\frontmatter\abstract_en.tex
-INPUT .\frontmatter\abstract_en.tex
-INPUT .\frontmatter\abstract_en.tex
-INPUT frontmatter\abstract_en.tex
 INPUT .\main.toc
 INPUT .\main.toc
 INPUT main.toc
@@ -423,15 +408,6 @@ INPUT .\chapters\chapter3.tex
 INPUT .\chapters\chapter3.tex
 INPUT .\chapters\chapter3.tex
 INPUT chapters\chapter3.tex
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstmisc.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstmisc.sty
-INPUT C:\Program Files\MiKTeX\tex\latex\listings\lstmisc.sty
 INPUT .\chapters\chapter4.tex
 INPUT .\chapters\chapter4.tex
 INPUT .\chapters\chapter4.tex
@@ -452,6 +428,9 @@ INPUT .\images\dof_02.png
 INPUT .\images\motion_blur.png
 INPUT .\images\motion_blur.png
 INPUT .\images\motion_blur.png
+INPUT .\images\vignette.png
+INPUT .\images\vignette.png
+INPUT .\images\vignette.png
 INPUT .\chapters\chapter5.tex
 INPUT .\chapters\chapter5.tex
 INPUT .\chapters\chapter5.tex
