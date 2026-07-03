@@ -9,9 +9,13 @@ src/scenes/
 .vscode/
 .vs/
 .cache/
-.claude/settings.local.json
+.claude/
 compile_commands.json
 imgui.ini
+
+# Report & slide sources (not published)
+report/
+slide/
 
 # Misc
 *.ilk
