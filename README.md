@@ -9,29 +9,29 @@ A hardware-accelerated Path Tracer written in C++ and CUDA. This project is heav
 
 Below is the roadmap and development progress of the project:
 
-- [x] **Basic Ray Tracing on CUDA**
-- [x] **Anti-Aliasing (AA) & Temporal Accumulation (TA)**
-- [x] **Ray-Object Intersection**
-- [x] **Material System**
+- ✅ **Basic Ray Tracing on CUDA**
+- ✅ **Anti-Aliasing (AA) & Temporal Accumulation (TA)**
+- ✅ **Ray-Object Intersection**
+- ✅ **Material System**
   - Supports Lambertian (Diffuse), Metal (Specular), and Dielectric (Glass/Refraction).
-- [x] **Physical Camera**
+- ✅ **Physical Camera**
   - Simulated physical lens (Pinhole -> Lens) with Depth of Field (Aperture) effects.
   - Interactive UI controls via mouse and keyboard.
-- [x] **Camera Upgrades**
+- ✅ **Camera Upgrades**
   - Ray timing simulation for physically accurate **Motion Blur**.
-- [x] **Basic Geometric Primitives**
+- ✅ **Basic Geometric Primitives**
   - Support for 1D, 2D, and 3D primitives including Spheres, Quads (Walls), and Boxes.
-- [x] **Bounding Volume Hierarchy (BVH)**
+- ⬜ **Bounding Volume Hierarchy (BVH)**
   - GPU-accelerated spatial subdivision for fast intersection tests, enabling real-time rendering of scenes with millions of polygons.
-- [x] **Mitsuba 3 Scene Loader**
+- ⬜ **Mitsuba 3 Scene Loader**
   - Parsing and loading standardized scenes exported from Mitsuba 3.
-- [x] **Texture Mapping**
+- ⬜ **Texture Mapping**
   - Support for Image textures, Checker patterns, and procedural Perlin Noise.
-- [x] **Emissive Materials**
+- ⬜ **Emissive Materials**
   - Turning geometric primitives into Area Lights.
-- [x] **Participating Media (Volumes)**
+- ⬜ **Participating Media (Volumes)**
   - Rendering constant density mediums such as fog, smoke, and clouds.
-- [ ] **Advanced Monte Carlo Integration**
+- ⬜ **Advanced Monte Carlo Integration**
   - *In Progress:* Integrating Importance Sampling, complex Probability Density Functions (PDF), and Next Event Estimation (Direct Light Sampling) for rapid noise reduction in complex scenes.
 
 ## 🛠 System Requirements
