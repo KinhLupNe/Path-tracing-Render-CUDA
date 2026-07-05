@@ -1,7 +1,7 @@
 # ScratchPathTracerCUDA
 
-![Showcase Image](docs/images/main_showcase.jpg) 
-> *(TODO: Insert your best showcase render image here. Recommended resolution: 1920x1080)*
+![Showcase Image](docs/images/best_render.png)
+> *High-density scene (~hundreds of spheres, all three material types) after 1846 accumulated frames.*
 
 A hardware-accelerated Path Tracer written in C++ and CUDA. This project is heavily inspired by the famous *"Ray Tracing in One Weekend"* series, but completely redesigned to run in parallel on CUDA architecture, enabling interactive real-time rendering.
 
@@ -76,14 +76,34 @@ Below is the roadmap and development progress of the project:
 
 ## 📸 Gallery
 
+Showcase renders from the project report (Chapter 4 — *Evaluation*). All images were rendered on an NVIDIA GeForce GTX 1650 at 1920×1014.
 
+### Overall Render Quality
+A dense scene of several hundred spheres with all three material types, converged over **1846 accumulated frames** via temporal Monte Carlo accumulation.
 
-| Feature | Image |
-|---------|-------|
-| **Motion Blur** | ![Motion Blur](docs/images/motion_blur.jpg)  |
-| **Depth of Field** | ![Depth of Field](docs/images/dof.jpg)  |
-| **BVH & High Poly** | ![BVH Performance](docs/images/bvh.jpg) <br> *TODO: Insert an image rendering a complex scene like the Stanford Bunny or Cornell Box.* |
-| **Textures & Volumes** | ![Textures & Fog](docs/images/textures_volumes.jpg) <br> *TODO: Insert an image demonstrating image textures, Perlin noise, or volumetric fog.* |
+![Overall render quality](docs/images/best_render.png)
+
+### Material Reproduction
+The three implemented materials side by side: **Lambertian** (red, ideal diffuse `f_r = ρ/π`), **Dielectric** (glass, Snell refraction + Schlick Fresnel), and **Metal** (gold, mirror reflection).
+
+![Three materials](docs/images/three_materials.png)
+
+### Depth of Field
+Thin-lens camera with a finite aperture. Objects on the focal plane stay sharp while others spread into the circle of confusion — blur strength scales with aperture radius `R = aperture/2`.
+
+| Aperture 0.061, Focus 0.9 | Aperture 0.021, Focus 2.1 |
+|:---:|:---:|
+| ![DoF a](docs/images/dof_01.png) | ![DoF b](docs/images/dof_02.png) |
+
+### Motion Blur
+Finite exposure `[t₀, t₁]`: each ray carries a random timestamp and moving spheres are linearly interpolated `p(t) = p₀ + t·v`, spreading their energy along the trajectory. Static spheres stay sharp.
+
+![Motion blur](docs/images/motion_blur.png)
+
+### Vignetting
+Post-process simulation of the optical `cos⁴θ` falloff law — brightness decreases from the center toward the frame corners, drawing the viewer's eye to the subject.
+
+![Vignetting](docs/images/vignette.png)
 
 ---
 *This project was built for educational and research purposes in Computer Graphics & Parallel Processing.*
